@@ -3,6 +3,7 @@
 #include "instance.c"
 #include "parser.c"
 #include "heuristique.c"
+#include "solution.c"
 
 int main(int argc, char **argv)
 {
@@ -30,8 +31,14 @@ int main(int argc, char **argv)
 	
 	//affichage de l'instance
 	PrintInstance(instance1);
-	InstanceFinalize(instance1);
+	struct Solution* solution;
+	SolutionInit(instance1, solution);
+	solution->solution = instance1->x;
 	
+	int a = SolutionFonctionObjectif(instance1, solution);
+	printf("valeur fonction objectif : %d",a);
+	
+
 	//heurisiques
 	int *liste = ordonancementAleatoire(instance1);
 
