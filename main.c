@@ -31,9 +31,9 @@ int main(int argc, char **argv)
 	//affichage de l'instance
 	PrintInstance(instance1);
 
-	struct Solution solution;
+	struct Solution* solution;
 	SolutionInit(instance1, solution);
-	solution->solution = instance1->solution_optimale;
+	solution->solution = instance1->x;
 	
 	int a = SolutionFonctionObjectif(instance1, solution);
 	printf("valeur fonction objectif : %d",a);

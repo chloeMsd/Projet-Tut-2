@@ -5,7 +5,7 @@
 #include "solution.h"
 
 void SolutionInit(struct Instance* instance, struct Solution* solution){
-	solution->solution = malloc(sizeof(int)*instance->nombre_objets);
+	solution->solution = malloc(sizeof(int)*instance->N);
 }
 
 void SolutionFinalize(struct Solution* solution){
@@ -14,8 +14,10 @@ void SolutionFinalize(struct Solution* solution){
 
 int SolutionFonctionObjectif(struct Instance* instance, struct Solution* solution){
 	int valeur=0;
-	for (int i=0; i<instance->N; i++){
-		if (solution[i]==1){
+	for (int i=0; i<instance->N; i++)
+	{
+		if (solution->solution[i] == 1)
+		{
 			valeur= valeur + instance->p[i];
 		}
 	}
@@ -26,10 +28,9 @@ int* SolutionCalculDimension(struct Instance* instance, struct Solution* solutio
 	//on cree un tableau de M cases c'est le totale des poids pour chaque dimension
 	int *s=malloc(instance->M*sizeof(int));
 	for (int i=0; i<instance->N; i++){
-		if (solution[i]==1){
+		if (solution->solution[i] == 1){
 			for (int j=0; j<instance->M;j++){
 				int a=s[j];
-				free(s[j]);
 				s[j]= a + instance->r[j][i];
 			}
 		}
@@ -40,7 +41,7 @@ int* SolutionCalculDimension(struct Instance* instance, struct Solution* solutio
 int SolutionTestFaisabilité(struct Instance* instance, struct Solution* solution){
 	//retourne 0 si c'est ok pour toutes les dimensions et retourne 1 sinon
 	//on cree un tableau avec M cases (1 case = 1 dimensions)
-	int *s=SolutionCalulDimension(instance,solution);
+	int *s=SolutionCalculDimension(instance,solution);
 	for (int j=0; j<instance->M;j++){
 		if (s[j] > instance->b[j]){
 			return 1;
