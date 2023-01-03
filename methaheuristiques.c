@@ -1,3 +1,6 @@
+
+/*
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "instance.h"
@@ -5,16 +8,16 @@
 #include "solution.h"
 #include "solution.c" //???? comment je recupere mes fonctions de solution.c ?? 
 
-int* Metheuristique_RL(struct Instance instance){
+int* Metheuristique_RL(struct Instance* instance){
 	//j'ai pris comme si on avait deja une solution courante venant d'une heuristique mais dans le code final il faudra utiliser l'appel à
 	//une fonction heuristique et pas mettre solution courante en parametre du coup
 	int *SolutionBest = malloc(instance->N*sizeof(int));
+	int *SolutionCourante;
 	int fPrec = SolutionFonctionObjectif(SolutionCourante);
 	int Continue = 0; 
 	int *SolutionVoisine = malloc(instance->N*sizeof(int));
 	int fBestVoisin=0;
 	int *SolutionBestVoisine = malloc(instance->N*sizeof(int));
-	int *SolutionCourante;
 	int *SolutionBestSousVoisine;
 	int fCourant;
 	//1er sous operateur, on echange un 0 en 1 a cahque fois, le voisinage est constité de tout ca et on prend la best solution
@@ -86,4 +89,6 @@ int* Metheuristique_RL(struct Instance instance){
 	return SolutionBest;
 	//revoir les free il en manque un paquet !!
 }
+
+*/
  
