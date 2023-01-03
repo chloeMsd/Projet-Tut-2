@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "instance.c"
 #include "parser.c"
+#include "heuristique.c"
 
 int main(int argc, char **argv)
 {
@@ -31,5 +32,8 @@ int main(int argc, char **argv)
 	PrintInstance(instance1);
 	InstanceFinalize(instance1);
 	
+	//heurisiques
+	int *liste = ordonancementAleatoire(instance1);
+
 	return 0;
 }
