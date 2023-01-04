@@ -31,14 +31,31 @@ int main(int argc, char **argv)
 	
 	//affichage de l'instance
 	PrintInstance(instance1);
-	struct Solution* solution;
-	SolutionInit(instance1, solution);
-	solution->solution = instance1->x;
+	
+	//test solution
+	int* solution = malloc(sizeof(int)*instance1->N);
+	
+	for (size_t i = 0; i < instance1->N; i++)
+	{
+		solution[i] = instance1->x[i];
+	}
 	
 	int a = SolutionFonctionObjectif(instance1, solution);
-	printf("valeur fonction objectif : %d",a);
+	printf("valeur fonction objectif : %d \n",a);
 	
-
+	
+	int *s = SolutionCalculDimension(instance1,solution);
+	for (size_t i = 0; i < instance1->M; i++)
+	{
+		printf("valeur pour chaque dimension : %d \n",s[i]);
+	}
+	
+	printf("solution faisable (oui=0 , non=1) : %d \n",SolutionTestFaisabilite(instance1,solution));
+	
+	SolutionAfficher(instance1, solution);
+	
+	printf("\n");
+	
 	//heurisiques
 	int *liste = ordonancementAleatoire(instance1);
 

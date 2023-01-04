@@ -1,6 +1,5 @@
 
 /*
-
 #include <stdio.h>
 #include <stdlib.h>
 #include "instance.h"
@@ -91,4 +90,3 @@ int* Metheuristique_RL(struct Instance* instance){
 }
 
 */
- 
