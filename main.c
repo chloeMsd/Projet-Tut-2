@@ -54,6 +54,13 @@ int main(int argc, char **argv)
 	
 	SolutionAfficher(instance1, solution);
 	
+	//heuristiques
+	int *liste;
+	liste = ordonancementAleatoire(instance1);
+	liste = ordonancementValeursDecroissantes(instance1);
+	liste = ordonancementRatioValeursPoids(instance1);
+	liste = ordonancementRatioValeursDimensionCritique(instance1);
+
 	printf("\n");
 	printf("erreur1");
 
@@ -63,9 +70,6 @@ int main(int argc, char **argv)
 	}
 	
 	printf("erreur2");
-	
-	//heurisiques
-	//int *liste = ordonancementAleatoire(instance1);
 
 	return 0;
 }

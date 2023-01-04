@@ -26,6 +26,7 @@ int* Metaheuristique_RL(struct Instance* instance){
 	int *SolutionVoisine = malloc(instance->N*sizeof(int));
 	int fBestVoisin=0;
 	int *SolutionBestVoisine = malloc(instance->N*sizeof(int));
+
 	int *SolutionBestSousVoisine = malloc(instance->N*sizeof(int));
 	int fCourant;
 	
@@ -119,4 +120,3 @@ int* Metaheuristique_RL(struct Instance* instance){
 	return SolutionBest;
 	//revoir les free il en manque un paquet !!
 }
-
