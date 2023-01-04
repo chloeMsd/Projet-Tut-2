@@ -55,6 +55,7 @@ void SetPoidsMaximum(struct Instance* instance, int* valeurs)
     instance->b = valeurs;
 }
 
+//fonction qui affiche les valeurs de l'instance
 void PrintInstance(struct Instance* instance)
 {
     printf("-- INSTANCE --\n");

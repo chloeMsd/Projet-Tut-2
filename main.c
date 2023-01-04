@@ -31,6 +31,8 @@ int main(int argc, char **argv)
 	
 	//affichage de l'instance
 	PrintInstance(instance1);
+
+	//solution
 	struct Solution* solution;
 	SolutionInit(instance1, solution);
 	solution->solution = instance1->x;
@@ -38,9 +40,12 @@ int main(int argc, char **argv)
 	int a = SolutionFonctionObjectif(instance1, solution);
 	printf("valeur fonction objectif : %d",a);
 	
-
-	//heurisiques
-	int *liste = ordonancementAleatoire(instance1);
+	//heuristiques
+	int *liste;
+	liste = ordonancementAleatoire(instance1);
+	liste = ordonancementValeursDecroissantes(instance1);
+	liste = ordonancementRatioValeursPoids(instance1);
+	liste = ordonancementRatioValeursDimensionCritique(instance1);
 
 	return 0;
 }
