@@ -4,6 +4,7 @@
 #include "parser.c"
 #include "heuristique.c"
 #include "solution.c"
+#include "methaheuristiques.c"
 
 int main(int argc, char **argv)
 {
@@ -41,12 +42,11 @@ int main(int argc, char **argv)
 	}
 	
 	int a = SolutionFonctionObjectif(instance1, solution);
-	printf("valeur fonction objectif : %d \n",a);
+	printf("valeur fonction objectif      : %d \n",a);
 	
 	
 	int *s = SolutionCalculDimension(instance1,solution);
-	for (size_t i = 0; i < instance1->M; i++)
-	{
+	for (size_t i = 0; i < instance1->M; i++){
 		printf("valeur pour chaque dimension : %d \n",s[i]);
 	}
 	
@@ -55,9 +55,17 @@ int main(int argc, char **argv)
 	SolutionAfficher(instance1, solution);
 	
 	printf("\n");
+	printf("erreur1");
+
+	int* solu = Metaheuristique_RL(instance1);
+	for (size_t i = 0; i < instance1->N; i++){
+		printf("valeur pour chaque dimension : %d \n",solu[i]);
+	}
+	
+	printf("erreur2");
 	
 	//heurisiques
-	int *liste = ordonancementAleatoire(instance1);
+	//int *liste = ordonancementAleatoire(instance1);
 
 	return 0;
 }
