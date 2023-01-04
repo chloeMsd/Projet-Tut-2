@@ -4,6 +4,7 @@
 #include "parser.c"
 #include "heuristique.c"
 #include "solution.c"
+#include "methaheuristiques.c"
 
 int main(int argc, char **argv)
 {
@@ -31,14 +32,27 @@ int main(int argc, char **argv)
 	
 	//affichage de l'instance
 	PrintInstance(instance1);
-
-	//solution
-	struct Solution* solution;
-	SolutionInit(instance1, solution);
-	solution->solution = instance1->x;
+	
+	//test solution
+	int* solution = malloc(sizeof(int)*instance1->N);
+	
+	for (size_t i = 0; i < instance1->N; i++)
+	{
+		solution[i] = instance1->x[i];
+	}
 	
 	int a = SolutionFonctionObjectif(instance1, solution);
-	printf("valeur fonction objectif : %d",a);
+	printf("valeur fonction objectif      : %d \n",a);
+	
+	
+	int *s = SolutionCalculDimension(instance1,solution);
+	for (size_t i = 0; i < instance1->M; i++){
+		printf("valeur pour chaque dimension : %d \n",s[i]);
+	}
+	
+	printf("solution faisable (oui=0 , non=1) : %d \n",SolutionTestFaisabilite(instance1,solution));
+	
+	SolutionAfficher(instance1, solution);
 	
 	//heuristiques
 	int *liste;
@@ -46,6 +60,16 @@ int main(int argc, char **argv)
 	liste = ordonancementValeursDecroissantes(instance1);
 	liste = ordonancementRatioValeursPoids(instance1);
 	liste = ordonancementRatioValeursDimensionCritique(instance1);
+
+	printf("\n");
+	printf("erreur1");
+
+	int* solu = Metaheuristique_RL(instance1);
+	for (size_t i = 0; i < instance1->N; i++){
+		printf("valeur pour chaque dimension : %d \n",solu[i]);
+	}
+	
+	printf("erreur2");
 
 	return 0;
 }
