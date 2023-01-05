@@ -52,11 +52,17 @@ int main(int argc, char **argv)
 	
 	printf("solution faisable (oui=0 , non=1) : %d \n",SolutionTestFaisabilite(instance1,solution));
 	
-	SolutionAfficher(instance1, solution);
+	//SolutionAfficher(instance1, solution);
 	
 	//heuristiques
 	int *liste;
-	liste = solutionHeuristique(instance1);
+	//liste = solutionHeuristique(instance1,1);
 
+	//metaheuritsique
+	int *en= Metaheuristique_RL(instance1, 2);
+	for (size_t i = 0; i < instance1->N; i++){
+		printf("objet dedans ?: %d \n",en[i]);
+	}
+	printf("valeur du meta : %d\n", SolutionFonctionObjectif(instance1,en));
 	return 0;
 }

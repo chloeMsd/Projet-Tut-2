@@ -297,16 +297,16 @@ int* solutionHeuristique(struct Instance* instance, int methode)
     switch (methode)
     {
     case 1:
-        indicesSolution = ordonancementAleatoire;
+        indicesSolution = ordonancementAleatoire(instance);
         break;
     case 2:
-        indicesSolution = ordonancementValeursDecroissantes;
+        indicesSolution = ordonancementValeursDecroissantes(instance);
         break;
     case 3:
-        indicesSolution = ordonancementRatioValeursPoids;
+        indicesSolution = ordonancementRatioValeursPoids(instance);
         break;
     case 4:
-        indicesSolution = ordonancementRatioValeursDimensionCritique;
+        indicesSolution = ordonancementRatioValeursDimensionCritique(instance);
         break;
     
     default:
