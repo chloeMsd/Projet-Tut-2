@@ -46,8 +46,8 @@ void afficherListe(int* liste, int taille)
 
     for (int i = 0; i < taille; i++)
     {
-        if (i == taille-1) printf("%d]", liste[i]);
-        else printf("%d, ", liste[i]);
+        if (i == taille-1) printf("%d:%d]", i,liste[i]);
+        else printf("%d:%d, ", i,liste[i]);
     }
 }
 
@@ -62,6 +62,7 @@ void afficherListeFloat(float* liste, int taille)
     }
 }
 
+//METHODE NUMERO 1
 //entrée :      instance dont on doit trier les éléments
 //sortie :      une liste triée de taille N dont chaque valeur représente l'indice d'un objet
 int* ordonancementAleatoire(struct Instance* instance)
@@ -93,6 +94,7 @@ int* ordonancementAleatoire(struct Instance* instance)
 }
 
 
+//METHODE NUMERO 2
 //entrée :      instance dont on doit trier les éléments
 //sortie :      une liste triée de taille N dont chaque valeur représente l'indice d'un objet
 int* ordonancementValeursDecroissantes(struct Instance* instance)
@@ -158,6 +160,7 @@ int* ordonancementValeursDecroissantes(struct Instance* instance)
 
 
 
+//METHODE NUMERO 3
 //entrée :      instance dont on doit trier les éléments
 //sortie :      une liste triée de taille N dont chaque valeur représente l'indice d'un objet
 int* ordonancementRatioValeursPoids(struct Instance* instance)
@@ -223,6 +226,7 @@ int* ordonancementRatioValeursPoids(struct Instance* instance)
 
 
 
+//METHODE NUMERO 4
 //entrée :      instance dont on doit trier les éléments
 //sortie :      une liste triée de taille N dont chaque valeur représente l'indice d'un objet
 int* ordonancementRatioValeursDimensionCritique(struct Instance* instance)
@@ -286,10 +290,28 @@ int* ordonancementRatioValeursDimensionCritique(struct Instance* instance)
     return indices;
 }
 
-//A TESTER
-int* solutionHeuristique(struct Instance* instance)
+int* solutionHeuristique(struct Instance* instance, int methode)
 {
-    int* indicesSolution = ordonancementValeursDecroissantes(instance);
+    int* indicesSolution;
+
+    switch (methode)
+    {
+    case 1:
+        indicesSolution = ordonancementAleatoire;
+        break;
+    case 2:
+        indicesSolution = ordonancementValeursDecroissantes;
+        break;
+    case 3:
+        indicesSolution = ordonancementRatioValeursPoids;
+        break;
+    case 4:
+        indicesSolution = ordonancementRatioValeursDimensionCritique;
+        break;
+    
+    default:
+        break;
+    }
 
     //on créé une liste de N valeurs à 0
     int* solutionDirecte = malloc(sizeof(int)*instance->N);
@@ -297,6 +319,9 @@ int* solutionHeuristique(struct Instance* instance)
     {
         solutionDirecte[i] = 0;
     }
+
+    printf("\n\nsolution heuristique initiale :");
+    afficherListe(solutionDirecte,instance->N);
 
     for (size_t compteur = 0; compteur < instance->N; compteur++)
     {
@@ -307,6 +332,13 @@ int* solutionHeuristique(struct Instance* instance)
             solutionDirecte[indicesSolution[compteur]] = 0;
         }
     }
+
+    printf("\n\nsolution heuristique :");
+    afficherListe(solutionDirecte,instance->N);
+
+    
+    printf("\n\nindices des solutions :");
+    afficherListe(indicesSolution,instance->N);
 
     return solutionDirecte;
 }

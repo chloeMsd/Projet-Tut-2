@@ -56,22 +56,7 @@ int main(int argc, char **argv)
 	
 	//heuristiques
 	int *liste;
-	liste = ordonancementAleatoire(instance1);
-	liste = ordonancementValeursDecroissantes(instance1);
-	liste = ordonancementRatioValeursPoids(instance1);
-	liste = ordonancementRatioValeursDimensionCritique(instance1);
-
-	printf("\n");
-	printf("erreur1");
-
-
-
-	/*int* solu = Metaheuristique_RL(instance1);
-	for (size_t i = 0; i < instance1->N; i++){
-		printf("valeur pour chaque dimension : %d \n",solu[i]);
-	}
-	*/
-	printf("erreur2");
+	liste = solutionHeuristique(instance1);
 
 	return 0;
 }

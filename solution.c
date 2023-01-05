@@ -19,11 +19,19 @@ int SolutionFonctionObjectif(struct Instance* instance, int* solution){
 int* SolutionCalculDimension(struct Instance* instance, int* solution){
 	//on cree un tableau de M cases c'est le totale des poids pour chaque dimension
 	int *s=malloc(instance->M*sizeof(int));
-	for (int i=0; i<instance->N; i++){
-		if (solution[i] == 1){
-			for (int j=0; j<instance->M;j++){
-				int a=s[j];
-				s[j]= a + instance->r[j][i];
+
+	for (size_t i = 0; i < instance->M; i++)
+	{
+		s[i] = 0;
+	}
+
+	for (int i=0; i<instance->N; i++)
+	{
+		if (solution[i] == 1)
+		{
+			for (int j=0; j<instance->M;j++)
+			{
+				s[j] += instance->r[j][i];
 			}
 		}
 	}
@@ -33,9 +41,11 @@ int* SolutionCalculDimension(struct Instance* instance, int* solution){
 int SolutionTestFaisabilite(struct Instance* instance, int* solution){
 	//retourne 0 si c'est ok pour toutes les dimensions et retourne 1 sinon
 	//on cree un tableau avec M cases (1 case = 1 dimensions)
-	int *s=SolutionCalculDimension(instance,solution);
-	for (int j=0; j<instance->M;j++){
-		if (s[j] > instance->b[j]){
+	int *s = SolutionCalculDimension(instance,solution);
+	for (int j=0; j<instance->M;j++)
+	{
+		if (s[j] > instance->b[j])
+		{
 			return 1;
 		}
 	} 
