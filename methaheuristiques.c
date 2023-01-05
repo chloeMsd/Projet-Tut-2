@@ -1,9 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "instance.h"
-#include "parser.h"
-//#include "solution.c" //???? comment je recupere mes fonctions de solution.c ?? 
-
 
 /*
  * Codage direct : un opérateur pertinent serait l’utilisation de deux sous-opérateurs. Le premier
