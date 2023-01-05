@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include "instance.h"
 #include "parser.h"
-#include "solution.h"
 
 
 int SolutionFonctionObjectif(struct Instance* instance, int* solution){

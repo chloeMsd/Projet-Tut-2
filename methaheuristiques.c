@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "instance.h"
 #include "parser.h"
-#include "solution.c" //???? comment je recupere mes fonctions de solution.c ?? 
+//#include "solution.c" //???? comment je recupere mes fonctions de solution.c ?? 
 
 
 /*
@@ -14,7 +14,7 @@ la première partie des solutions du voisinage. Le deuxième sous-opérateur con
 0). La deuxième partie des solutions voisines serait alors constituée des solutions réalisables
 résultantes de tous les échanges possibles.
  * */
-
+/*
 int* Metaheuristique_RL(struct Instance* instance){
 	//j'ai pris comme si on avait deja une solution courante venant d'une heuristique mais dans le code final il faudra utiliser l'appel à
 	//une fonction heuristique et pas mettre solution courante en parametre du coup
@@ -120,3 +120,4 @@ int* Metaheuristique_RL(struct Instance* instance){
 	//revoir les free il en manque un paquet !!
 }
 
+*/

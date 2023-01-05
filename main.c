@@ -42,7 +42,7 @@ int main(int argc, char **argv)
 	}
 	
 	int a = SolutionFonctionObjectif(instance1, solution);
-	printf("valeur fonction objectif      : %d \n",a);
+	printf("valeur fonction objectif : %d \n",a);
 	
 	
 	int *s = SolutionCalculDimension(instance1,solution);
@@ -57,15 +57,17 @@ int main(int argc, char **argv)
 	printf("\n");
 	printf("erreur1");
 
-	int* solu = Metaheuristique_RL(instance1);
+
+
+	/*int* solu = Metaheuristique_RL(instance1);
 	for (size_t i = 0; i < instance1->N; i++){
 		printf("valeur pour chaque dimension : %d \n",solu[i]);
 	}
-	
+	*/
 	printf("erreur2");
 	
 	//heurisiques
-	//int *liste = ordonancementAleatoire(instance1);
-
+	int *liste = ordonancementAleatoire(instance1);
+	printf("\n");
 	return 0;
 }
