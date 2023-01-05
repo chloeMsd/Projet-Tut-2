@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "solution.c"
 #include "instance.c"
 #include "parser.c"
 #include "heuristique.c"
-#include "solution.c"
 #include "methaheuristiques.c"
 
 int main(int argc, char **argv)

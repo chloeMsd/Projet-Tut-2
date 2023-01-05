@@ -1,5 +1,4 @@
 #include "instance.h"
-#include "solution.h"
 #include <stdio.h>
 
 
@@ -303,7 +302,7 @@ int* solutionHeuristique(struct Instance* instance)
     {
         solutionDirecte[indicesSolution[compteur]] = 1;
 
-        if(SolutionTestFaisabilité(instance, solutionDirecte) == 1)
+        if(SolutionTestFaisabilite(instance, solutionDirecte) == 1)
         {
             solutionDirecte[indicesSolution[compteur]] = 0;
         }
