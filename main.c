@@ -31,7 +31,7 @@ int main(int argc, char **argv)
 	}
 	
 	//affichage de l'instance
-	PrintInstance(instance1);
+	//PrintInstance(instance1);
 	
 	//test solution
 	int* solution = malloc(sizeof(int)*instance1->N);
@@ -52,17 +52,21 @@ int main(int argc, char **argv)
 	
 	printf("solution faisable (oui=0 , non=1) : %d \n",SolutionTestFaisabilite(instance1,solution));
 	
-	//SolutionAfficher(instance1, solution);
+	SolutionAfficher(instance1, solution);
 	
 	//heuristiques
 	int *liste;
-	//liste = solutionHeuristique(instance1,1);
+	liste = solutionHeuristique(instance1,1);
 
 	//metaheuritsique
-	int *en= Metaheuristique_RL(instance1, 2);
+	int *en= Metaheuristique_RL(instance1, 1);
 	for (size_t i = 0; i < instance1->N; i++){
-		printf("objet dedans ?: %d \n",en[i]);
+		if (en[i]==1){
+			printf("objet dedans ?: %ld : %d \n",i,en[i]);
+		}
 	}
 	printf("valeur du meta : %d\n", SolutionFonctionObjectif(instance1,en));
+	
+	
 	return 0;
 }
