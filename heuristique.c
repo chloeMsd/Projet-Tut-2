@@ -1,4 +1,5 @@
 #include "instance.h"
+#include "affichage.c"
 #include <stdio.h>
 
 
@@ -40,28 +41,6 @@ float ratioValeurDimension(struct Instance* instance, int indice)
     return (float) instance->p[indice] / (float) valeurDimensionCritique(instance);
 }
 
-void afficherListe(int* liste, int taille)
-{
-    printf("[");
-
-    for (int i = 0; i < taille; i++)
-    {
-        if (i == taille-1) printf("%d:%d]", i,liste[i]);
-        else printf("%d:%d, ", i,liste[i]);
-    }
-}
-
-void afficherListeFloat(float* liste, int taille)
-{
-    printf("[");
-
-    for (int i = 0; i < taille; i++)
-    {
-        if (i == taille-1) printf("%.3f]", liste[i]);
-        else printf("%.3f, ", liste[i]);
-    }
-}
-
 //METHODE NUMERO 1
 //entrée :      instance dont on doit trier les éléments
 //sortie :      une liste triée de taille N dont chaque valeur représente l'indice d'un objet
@@ -77,7 +56,7 @@ int* ordonancementAleatoire(struct Instance* instance)
     }
 
     printf("\n\nliste d'indices initiale : ["); 
-    afficherListe(indices, instance->N);
+    afficherListeInt(indices, instance->N);
 
     for (int i = 0; i < instance->N-1; i++)
     {
@@ -88,7 +67,7 @@ int* ordonancementAleatoire(struct Instance* instance)
     }
 
     printf("\n\nliste d'indices triés aléatoirement : ["); 
-    afficherListe(indices, instance->N);
+    afficherListeInt(indices, instance->N);
 
     return indices;
 }
@@ -110,7 +89,7 @@ int* ordonancementValeursDecroissantes(struct Instance* instance)
     }
 
     printf("\n\nliste d'indices initiale : ["); 
-    afficherListe(indices, instance->N);
+    afficherListeInt(indices, instance->N);
 
     int valeurMax = 0;
     int indiceMax = 0;
@@ -142,7 +121,7 @@ int* ordonancementValeursDecroissantes(struct Instance* instance)
     }
 
     printf("\n\nliste d'indices triés selon leur valeur : ["); 
-    afficherListe(indices, instance->N);
+    afficherListeInt(indices, instance->N);
 
     int* listeValeurs = malloc(sizeof(int)*instance->N);
 
@@ -152,7 +131,7 @@ int* ordonancementValeursDecroissantes(struct Instance* instance)
     }
     
     printf("\n\nliste des valeurs selon les indices triés selon leur valeur : ["); 
-    afficherListe(listeValeurs, instance->N);
+    afficherListeInt(listeValeurs, instance->N);
 
 
     return indices;
@@ -176,7 +155,7 @@ int* ordonancementRatioValeursPoids(struct Instance* instance)
     }
 
     printf("\n\nliste d'indices initiale : ["); 
-    afficherListe(indices, instance->N);
+    afficherListeInt(indices, instance->N);
 
     float valeurMax = 0;
     int indiceMax = 0;
@@ -208,7 +187,7 @@ int* ordonancementRatioValeursPoids(struct Instance* instance)
     }
 
     printf("\n\nliste d'indices triés selon leur ratio : ["); 
-    afficherListe(indices, instance->N);
+    afficherListeInt(indices, instance->N);
 
     float* listeValeurs = malloc(sizeof(float)*instance->N);
 
@@ -242,7 +221,7 @@ int* ordonancementRatioValeursDimensionCritique(struct Instance* instance)
     }
 
     printf("\n\nliste d'indices initiale : ["); 
-    afficherListe(indices, instance->N);
+    afficherListeInt(indices, instance->N);
 
     float valeurMax = 0;
     int indiceMax = 0;
@@ -274,7 +253,7 @@ int* ordonancementRatioValeursDimensionCritique(struct Instance* instance)
     }
 
     printf("\n\nliste d'indices triés selon leur ratio : ["); 
-    afficherListe(indices, instance->N);
+    afficherListeInt(indices, instance->N);
 
     float* listeValeurs = malloc(sizeof(float)*instance->N);
 
@@ -283,8 +262,7 @@ int* ordonancementRatioValeursDimensionCritique(struct Instance* instance)
         listeValeurs[i] = ratioValeurDimension(instance, indices[i]);
     }
     
-    printf("\n\nliste des ratios selon les indices triés selon leur ratio : ["); 
-    afficherListeFloat(listeValeurs, instance->N);
+    printf("\n\nliste des ratios selon les indices triés selon leur ratio : ["); (listeValeurs, instance->N);
 
 
     return indices;
@@ -321,7 +299,7 @@ int* solutionHeuristique(struct Instance* instance, int methode)
     }
 
     printf("\n\nsolution heuristique initiale :");
-    afficherListe(solutionDirecte,instance->N);
+    afficherListeInt(solutionDirecte,instance->N);
 
     for (size_t compteur = 0; compteur < instance->N; compteur++)
     {
@@ -334,11 +312,11 @@ int* solutionHeuristique(struct Instance* instance, int methode)
     }
 
     printf("\n\nsolution heuristique :");
-    afficherListe(solutionDirecte,instance->N);
+    afficherListeInt(solutionDirecte,instance->N);
 
     
     printf("\n\nindices des solutions :");
-    afficherListe(indicesSolution,instance->N);
+    afficherListeInt(indicesSolution,instance->N);
 
     return solutionDirecte;
 }
