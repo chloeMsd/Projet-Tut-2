@@ -1,5 +1,4 @@
 #include "instance.h"
-#include "affichage.c"
 #include <stdio.h>
 
 

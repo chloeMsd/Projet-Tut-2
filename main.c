@@ -5,6 +5,7 @@
 #include "parser.c"
 #include "heuristique.c"
 #include "methaheuristiques.c"
+#include "affichage.c"
 
 int main(int argc, char **argv)
 {
@@ -50,14 +51,17 @@ int main(int argc, char **argv)
 		printf("valeur pour chaque dimension : %d \n",s[i]);
 	}
 	
-	printf("solution faisable (oui=0 , non=1) : %d \n",SolutionTestFaisabilite(instance1,solution));
+	printf("solution faisable (oui=0 , non=1) : %d \n", SolutionTestFaisabilite(instance1,solution));
 	
 	SolutionAfficher(instance1, solution);
 	
 	//heuristiques
-	int *liste;
-	liste = solutionHeuristique(instance1,1);
-
+	for (size_t i = 0; i < 10; i++)
+	{
+		int *liste;
+		liste = solutionHeuristique(instance1,1);
+	}
+	
 	//metaheuritsique
 	int *en= Metaheuristique_RL(instance1, 1);
 	for (size_t i = 0; i < instance1->N; i++){
