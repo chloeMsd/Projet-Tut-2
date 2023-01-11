@@ -1,6 +1,7 @@
 #include "instance.h"
 #include <stdio.h>
-
+#include <stdlib.h>
+#include <time.h>
 
 //retourne la somme des poids de l'élément de l'instance à l'indice donné
 int sommePoids(struct Instance* instance, int indice)

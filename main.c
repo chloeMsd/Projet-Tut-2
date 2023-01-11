@@ -63,7 +63,7 @@ int main(int argc, char **argv)
 	}
 	
 	//metaheuritsique
-	int *en= Metaheuristique_RL(instance1, 1);
+	int *en = Metaheuristique_RL(instance1, 1);
 	for (size_t i = 0; i < instance1->N; i++){
 		if (en[i]==1){
 			printf("objet dedans ?: %ld : %d \n",i,en[i]);
