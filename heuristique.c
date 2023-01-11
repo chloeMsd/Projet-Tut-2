@@ -290,7 +290,7 @@ int* solutionHeuristique(struct Instance* instance, int methode)
         break;
     }
 
-    //on créé une liste de N valeurs à 0
+    //on créé un tableau de N valeurs initialisées à 0
     int* solutionDirecte = malloc(sizeof(int)*instance->N);
     for (int i = 0; i < instance->N; i++)
     {
