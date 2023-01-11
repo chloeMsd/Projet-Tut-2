@@ -19,6 +19,13 @@ void supprimerElementListeTabou(struct ListeTabou* listeTabou)
     }
 }
 
+//renvoie 0 si la liste est pleine
+int listeTabouPleine(struct ListeTabou* listeTabou)
+{
+    if (listeTabou->dernier == listeTabou->N) return 0;
+    else return 1;
+}
+
 //ajoute un nouveau mouvement à la liste
 void ajouterMouvementListeTabou(struct ListeTabou* listeTabou, int element0, int element1)
 {
@@ -29,13 +36,6 @@ void ajouterMouvementListeTabou(struct ListeTabou* listeTabou, int element0, int
         listeTabou->liste[listeTabou->dernier] = mouvement;
         listeTabou->dernier++;
     }
-}
-
-//renvoie 0 si la liste est pleine
-int listeTabouPleine(struct ListeTabou* listeTabou)
-{
-    if (listeTabou->dernier == listeTabou->N) return 0;
-    else return 1;
 }
 
 //retourne 0 si le mouvement est dans la liste

@@ -21,3 +21,17 @@ void afficherListeFloating(float* liste, int taille)
         else printf("%.3f, ", liste[i]);
     }
 }
+
+void afficherSolution(struct Instance* instance, int* solution)
+{
+	printf("\nSolutions : ");
+    
+    for (size_t i = 0; i < instance->N; i++)
+	{
+		if (solution[i]==1){
+			printf("[%ld] ", i);
+		}
+	}
+    
+    printf("\n\nSomme totale des valeurs  : %d\n", SolutionFonctionObjectif(instance, solution));
+}

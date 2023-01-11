@@ -108,7 +108,7 @@ int* Metaheuristique_Tabou(struct Instance* instance, int methode, int nbIterati
 	//initialisation d'une liste tabou de taille N
 	//cette liste stocke des couples d'entier
 	struct ListeTabou* listeTabou;
-	ListeTabouInit(listeTabou,tailleListeTabou);
+	ListeTabouInit(listeTabou, tailleListeTabou);
 	
 	//récupération d'une solution de base
 	int *SolutionCourante = solutionHeuristique(instance, methode);
