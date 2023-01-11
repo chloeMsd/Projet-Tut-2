@@ -46,8 +46,7 @@ float ratioValeurDimension(struct Instance* instance, int indice)
 //sortie :      une liste triée de taille N dont chaque valeur représente l'indice d'un objet
 int* ordonancementAleatoire(struct Instance* instance)
 {
-    printf("\n\n--ordonancementAleatoire--");    
-
+   
     int* indices = malloc(sizeof(int)*instance->N);
 
     for (int i = 0; i < instance->N; i++)
@@ -55,11 +54,11 @@ int* ordonancementAleatoire(struct Instance* instance)
         indices[i] = i;
     }
 
-    printf("\n\nliste d'indices initiale : ["); 
-    afficherListeInt(indices, instance->N);
-
     for (int i = 0; i < instance->N-1; i++)
     {
+        //initialisation du generateur de nombre aléatoire
+        srand(time(0)); 
+
         int j = rand() % (instance->N-i) + i;
         int temp = indices[i];
         indices[i] = indices[j];
@@ -298,9 +297,6 @@ int* solutionHeuristique(struct Instance* instance, int methode)
         solutionDirecte[i] = 0;
     }
 
-    printf("\n\nsolution heuristique initiale :");
-    afficherListeInt(solutionDirecte,instance->N);
-
     for (size_t compteur = 0; compteur < instance->N; compteur++)
     {
         solutionDirecte[indicesSolution[compteur]] = 1;
@@ -310,13 +306,6 @@ int* solutionHeuristique(struct Instance* instance, int methode)
             solutionDirecte[indicesSolution[compteur]] = 0;
         }
     }
-
-    printf("\n\nsolution heuristique :");
-    afficherListeInt(solutionDirecte,instance->N);
-
-    
-    printf("\n\nindices des solutions :");
-    afficherListeInt(indicesSolution,instance->N);
 
     return solutionDirecte;
 }

@@ -9,11 +9,7 @@ int* Metaheuristique_RL(struct Instance* instance, int methode)
 	printf("\n\n--Métaheuristique - Initialisation--");
 
 	//récupération d'une solution de base
-	int *SolutionCourante;
-	for (size_t i = 0; i < 2; i++)
-	{
-		SolutionCourante = solutionHeuristique(instance, methode);
-	}
+	int *SolutionCourante = solutionHeuristique(instance, methode);
 	
 	printf("\n\nSolution courante : "); afficherListeInt(SolutionCourante, instance->N);
 	int* poids = SolutionCalculDimension(instance, SolutionCourante);
@@ -43,39 +39,45 @@ int* Metaheuristique_RL(struct Instance* instance, int methode)
 	int fBestVoisin = 0;
 	int compteur=0;
 	
-	//1er sous operateur, on echange un 0 en 1 a cahque fois, le voisinage est constité de tout ca et on prend la best solution
 	while (continuer==0){		
-		compteur=compteur+1;
+		compteur++;
 		printf("\ntour %d\n", compteur);
-		int fBestVoisin=0;
+		int fBestVoisin = 0;
 			
-		for(int k=0;k<instance->N;k++){ //pour tous les objets contenus dans le sac 
+		//pour tous les objets contenus dans le sac 
+		for(int k = 0; k < instance->N; k++)
+		{	
+			memcpy(SolutionVoisine, SolutionCourante, instance->N*sizeof(int));
 			
-			memcpy(SolutionVoisine, SolutionCourante, instance->N*sizeof(int) );
-			
-			if (SolutionVoisine[k]==0)
-			{ //si on a un 0 on le transforme en 1 a l'objet ir
-				SolutionVoisine[k]=1;
+			//si on a un 0 on le transforme en 1
+			if (SolutionVoisine[k] == 0)
+			{ 
+				SolutionVoisine[k] = 1;
 
-				printf("\nk = %d : Valeurs du sac de la solution voisine : %d",k, SolutionFonctionObjectif(instance, SolutionVoisine));
-				printf("\nk = %d : faisabilite : %d",k, SolutionTestFaisabilite(instance,SolutionVoisine));
+				//printf("\nk = %d : Valeurs du sac de la solution voisine : %d",k, SolutionFonctionObjectif(instance, SolutionVoisine));
+				//printf("\nk = %d : faisabilite : %d",k, SolutionTestFaisabilite(instance,SolutionVoisine));
 				
-				if (SolutionFonctionObjectif(instance, SolutionVoisine) > fBestVoisin && SolutionTestFaisabilite(instance,SolutionVoisine)==0){ // si la solution est meilleur on l'ajoute
+				//si la solution est meilleure ET elle est faisable, on l'ajoute
+				if (SolutionFonctionObjectif(instance, SolutionVoisine) > fBestVoisin && SolutionTestFaisabilite(instance,SolutionVoisine) == 0)
+				{ 
 					printf("\nNouvelle solution best voisine !");
 					fBestVoisin = SolutionFonctionObjectif(instance, SolutionVoisine);
-					memcpy( SolutionBestVoisine, SolutionVoisine, instance->N*sizeof(int) );
+					memcpy(SolutionBestVoisine, SolutionVoisine, instance->N*sizeof(int));
 				}
 
+				//pour chaque AUTRE élément s'il est égal à 1 on le transforme en 0
 				for (size_t i = 0; i < instance->N; i++)
 				{
-					if (SolutionVoisine[i]==1)
+					if (i!=k && SolutionVoisine[i] == 1)
 					{
 						SolutionVoisine[i] = 0;
 
-						printf("\nk = %d, i = %d : Valeurs du sac de la solution voisine : %d",k,i, SolutionFonctionObjectif(instance, SolutionVoisine));
-						printf("\nk = %d, i = %d : faisabilite : %d",k,i, SolutionTestFaisabilite(instance,SolutionVoisine));
+						//printf("\nk = %d, i = %d : Valeurs du sac de la solution voisine : %d",k,i, SolutionFonctionObjectif(instance, SolutionVoisine));
+						//printf("\nk = %d, i = %d : faisabilite : %d",k,i, SolutionTestFaisabilite(instance,SolutionVoisine));
 						
-						if (SolutionFonctionObjectif(instance, SolutionVoisine) > fBestVoisin && SolutionTestFaisabilite(instance,SolutionVoisine)==0){ // si la solution est meilleur on l'ajoute
+						//si la solution est meilleure ET elle est faisable, on l'ajoute
+						if (SolutionFonctionObjectif(instance, SolutionVoisine) > fBestVoisin && SolutionTestFaisabilite(instance,SolutionVoisine) == 0)
+						{ // si la solution est meilleur on l'ajoute
 							printf("\nNouvelle solution best voisine !");
 							fBestVoisin = SolutionFonctionObjectif(instance, SolutionVoisine);
 							memcpy( SolutionBestVoisine, SolutionVoisine, instance->N*sizeof(int) );
