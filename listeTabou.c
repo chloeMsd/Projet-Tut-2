@@ -7,9 +7,7 @@ void ListeTabouInit(struct ListeTabou* listeTabou, int nb_objets)
 {
     listeTabou->N = nb_objets;
     listeTabou->dernier = 0;
-    listeTabou->liste = nb_objets;
-
-    malloc(listeTabou->N*sizeof(int)*2);
+    listeTabou->liste = malloc(listeTabou->N*sizeof(int)*2);
 }
 
 //supprime le plus vieil élément de la liste
@@ -26,7 +24,7 @@ void ajouterMouvementListeTabou(struct ListeTabou* listeTabou, int element0, int
 {
     if (!listeTabouPleine(listeTabou))
     {
-        int* mouvement[2] = {element0, element1};
+        int mouvement[2] = {element0, element1};
 
         listeTabou->liste[listeTabou->dernier] = mouvement;
         listeTabou->dernier++;
@@ -46,7 +44,7 @@ int mouvementDansListeTabou(struct ListeTabou* listeTabou, int element0, int ele
     int trouve = 1;
     int i = 0;
 
-    while (trouve == 1 && i <= listeTabou->N)
+    while (trouve == 1 && i < listeTabou->dernier)
     {
         if(listeTabou->liste[i][0] == element0 && listeTabou->liste[i][1] == element1)
         {

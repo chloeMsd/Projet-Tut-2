@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-void afficherListeInt(int* liste, int taille)
+void afficherListeInteger(int* liste, int taille)
 {
     printf("[");
 
@@ -11,7 +11,7 @@ void afficherListeInt(int* liste, int taille)
     }
 }
 
-void afficherListeFloat(float* liste, int taille)
+void afficherListeFloating(float* liste, int taille)
 {
     printf("[");
 

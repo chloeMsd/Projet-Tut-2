@@ -46,7 +46,6 @@ float ratioValeurDimension(struct Instance* instance, int indice)
 //sortie :      une liste triée de taille N dont chaque valeur représente l'indice d'un objet
 int* ordonancementAleatoire(struct Instance* instance)
 {
-   
     int* indices = malloc(sizeof(int)*instance->N);
 
     for (int i = 0; i < instance->N; i++)
@@ -56,7 +55,6 @@ int* ordonancementAleatoire(struct Instance* instance)
 
     for (int i = 0; i < instance->N-1; i++)
     {
-        //initialisation du generateur de nombre aléatoire
         srand(time(0)); 
 
         int j = rand() % (instance->N-i) + i;
@@ -66,7 +64,7 @@ int* ordonancementAleatoire(struct Instance* instance)
     }
 
     printf("\n\nliste d'indices triés aléatoirement : ["); 
-    afficherListeInt(indices, instance->N);
+    afficherListeInteger(indices, instance->N);
 
     return indices;
 }
@@ -88,7 +86,7 @@ int* ordonancementValeursDecroissantes(struct Instance* instance)
     }
 
     printf("\n\nliste d'indices initiale : ["); 
-    afficherListeInt(indices, instance->N);
+    afficherListeInteger(indices, instance->N);
 
     int valeurMax = 0;
     int indiceMax = 0;
@@ -120,7 +118,7 @@ int* ordonancementValeursDecroissantes(struct Instance* instance)
     }
 
     printf("\n\nliste d'indices triés selon leur valeur : ["); 
-    afficherListeInt(indices, instance->N);
+    afficherListeInteger(indices, instance->N);
 
     int* listeValeurs = malloc(sizeof(int)*instance->N);
 
@@ -130,7 +128,7 @@ int* ordonancementValeursDecroissantes(struct Instance* instance)
     }
     
     printf("\n\nliste des valeurs selon les indices triés selon leur valeur : ["); 
-    afficherListeInt(listeValeurs, instance->N);
+    afficherListeInteger(listeValeurs, instance->N);
 
 
     return indices;
@@ -154,7 +152,7 @@ int* ordonancementRatioValeursPoids(struct Instance* instance)
     }
 
     printf("\n\nliste d'indices initiale : ["); 
-    afficherListeInt(indices, instance->N);
+    afficherListeInteger(indices, instance->N);
 
     float valeurMax = 0;
     int indiceMax = 0;
@@ -186,7 +184,7 @@ int* ordonancementRatioValeursPoids(struct Instance* instance)
     }
 
     printf("\n\nliste d'indices triés selon leur ratio : ["); 
-    afficherListeInt(indices, instance->N);
+    afficherListeInteger(indices, instance->N);
 
     float* listeValeurs = malloc(sizeof(float)*instance->N);
 
@@ -196,7 +194,7 @@ int* ordonancementRatioValeursPoids(struct Instance* instance)
     }
     
     printf("\n\nliste des ratios selon les indices triés selon leur ratio : ["); 
-    afficherListeFloat(listeValeurs, instance->N);
+    afficherListeFloating(listeValeurs, instance->N);
 
 
     return indices;
@@ -220,7 +218,7 @@ int* ordonancementRatioValeursDimensionCritique(struct Instance* instance)
     }
 
     printf("\n\nliste d'indices initiale : ["); 
-    afficherListeInt(indices, instance->N);
+    afficherListeInteger(indices, instance->N);
 
     float valeurMax = 0;
     int indiceMax = 0;
@@ -252,7 +250,7 @@ int* ordonancementRatioValeursDimensionCritique(struct Instance* instance)
     }
 
     printf("\n\nliste d'indices triés selon leur ratio : ["); 
-    afficherListeInt(indices, instance->N);
+    afficherListeInteger(indices, instance->N);
 
     float* listeValeurs = malloc(sizeof(float)*instance->N);
 
