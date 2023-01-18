@@ -3,7 +3,7 @@
 #include "parser.h"
 
 //initialise le parser
-void ParserInitFromFile(struct Parser* parser, char* filename)
+void ParserInitialiserAvecFichier(struct Parser* parser, char* filename)
 {
     parser->fichier = fopen(filename, "r");
 

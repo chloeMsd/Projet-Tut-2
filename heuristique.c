@@ -16,18 +16,25 @@ int sommePoids(struct Instance* instance, int indice)
     return somme;
 }
 
-int valeurDimensionCritique(struct Instance* instance)
+//entree :  l'instance
+//          la solution
+//sortie :  la dimension de l'instance qui a le moins de place
+int valeurDimensionCritique(struct Instance* instance, int* solution)
 {
-    int dimCritique = instance->b[0];
+    int* poids = SolutionCalculDimension(instance, solution);
+    int dimCritique = instance->b[0]-poids[0];
 
     for (size_t i = 1; i < instance->M; i++)
     {
-        if (instance->b[i] < dimCritique)
+        afficherPoidsSolutionSac(instance, solution);
+        
+        if (instance->b[i]-poids[i] < dimCritique)
         {
             dimCritique = instance->b[i];
         }
     }
     
+    printf("dimension critique : %d", dimCritique);
     return dimCritique;
 }
 
@@ -36,9 +43,22 @@ float ratioValeurPoids(struct Instance* instance, int indice)
     return (float) instance->p[indice] / (float) sommePoids(instance, indice);
 }
 
-float ratioValeurDimension(struct Instance* instance, int indice)
+float ratioValeurDimension(struct Instance* instance, int* solution, int indice)
 {
-    return (float) instance->p[indice] / (float) valeurDimensionCritique(instance);
+    return (float) instance->p[indice] / (float) valeurDimensionCritique(instance, solution);
+}
+
+int* nouveauTableauDeValeursNulles(int taille)
+{
+    int* indices = malloc(sizeof(int)*taille);
+
+    //on créé une liste de N indices de 0 à N-1
+    for (int i = 0; i < taille; i++)
+    {
+        indices[i] = i;
+    }
+
+    return indices;
 }
 
 //METHODE NUMERO 1
@@ -46,12 +66,7 @@ float ratioValeurDimension(struct Instance* instance, int indice)
 //sortie :      une liste triée de taille N dont chaque valeur représente l'indice d'un objet
 int* ordonancementAleatoire(struct Instance* instance)
 {
-    int* indices = malloc(sizeof(int)*instance->N);
-
-    for (int i = 0; i < instance->N; i++)
-    {
-        indices[i] = i;
-    }
+    int* indices = nouveauTableauDeValeursNulles(instance->N);
 
     for (int i = 0; i < instance->N-1; i++)
     {
@@ -63,9 +78,6 @@ int* ordonancementAleatoire(struct Instance* instance)
         indices[j] = temp;
     }
 
-    printf("\n\nliste d'indices triés aléatoirement : ["); 
-    afficherListeInteger(indices, instance->N);
-
     return indices;
 }
 
@@ -75,18 +87,7 @@ int* ordonancementAleatoire(struct Instance* instance)
 //sortie :      une liste triée de taille N dont chaque valeur représente l'indice d'un objet
 int* ordonancementValeursDecroissantes(struct Instance* instance)
 {
-    printf("\n\n--ordonancementValeursDecroissantes--");     
-
-    int* indices = malloc(sizeof(int)*instance->N);
-
-    //on créé une liste de N indices de 0 à N-1
-    for (int i = 0; i < instance->N; i++)
-    {
-        indices[i] = i;
-    }
-
-    printf("\n\nliste d'indices initiale : ["); 
-    afficherListeInteger(indices, instance->N);
+    int* indices = nouveauTableauDeValeursNulles(instance->N);
 
     int valeurMax = 0;
     int indiceMax = 0;
@@ -117,9 +118,6 @@ int* ordonancementValeursDecroissantes(struct Instance* instance)
         }
     }
 
-    printf("\n\nliste d'indices triés selon leur valeur : ["); 
-    afficherListeInteger(indices, instance->N);
-
     int* listeValeurs = malloc(sizeof(int)*instance->N);
 
     for (size_t i = 0; i < instance->N; i++)
@@ -127,10 +125,6 @@ int* ordonancementValeursDecroissantes(struct Instance* instance)
         listeValeurs[i] = instance->p[indices[i]];
     }
     
-    printf("\n\nliste des valeurs selon les indices triés selon leur valeur : ["); 
-    afficherListeInteger(listeValeurs, instance->N);
-
-
     return indices;
 }
 
@@ -141,18 +135,7 @@ int* ordonancementValeursDecroissantes(struct Instance* instance)
 //sortie :      une liste triée de taille N dont chaque valeur représente l'indice d'un objet
 int* ordonancementRatioValeursPoids(struct Instance* instance)
 {
-    printf("\n\n--ordonancementRatioValeursPoids--");     
-
-    int* indices = malloc(sizeof(int)*instance->N);
-
-    //on créé une liste de N indices de 0 à N-1
-    for (int i = 0; i < instance->N; i++)
-    {
-        indices[i] = i;
-    }
-
-    printf("\n\nliste d'indices initiale : ["); 
-    afficherListeInteger(indices, instance->N);
+    int* indices = nouveauTableauDeValeursNulles(instance->N);
 
     float valeurMax = 0;
     int indiceMax = 0;
@@ -183,9 +166,6 @@ int* ordonancementRatioValeursPoids(struct Instance* instance)
         }
     }
 
-    printf("\n\nliste d'indices triés selon leur ratio : ["); 
-    afficherListeInteger(indices, instance->N);
-
     float* listeValeurs = malloc(sizeof(float)*instance->N);
 
     for (size_t i = 0; i < instance->N; i++)
@@ -193,32 +173,17 @@ int* ordonancementRatioValeursPoids(struct Instance* instance)
         listeValeurs[i] = ratioValeurPoids(instance, indices[i]);
     }
     
-    printf("\n\nliste des ratios selon les indices triés selon leur ratio : ["); 
-    afficherListeFloating(listeValeurs, instance->N);
-
-
     return indices;
 }
 
 
 
 //METHODE NUMERO 4
-//entrée :      instance dont on doit trier les éléments
+//entrée :      instance dont on doit trier les éléments, la solution actuelle
 //sortie :      une liste triée de taille N dont chaque valeur représente l'indice d'un objet
-int* ordonancementRatioValeursDimensionCritique(struct Instance* instance)
+int* ordonancementRatioValeursDimensionCritique(struct Instance* instance, int* solution)
 {
-    printf("\n\n--ordonancementRatioValeursDimensionCritique--");     
-
-    int* indices = malloc(sizeof(int)*instance->N);
-
-    //on créé une liste de N indices de 0 à N-1
-    for (int i = 0; i < instance->N; i++)
-    {
-        indices[i] = i;
-    }
-
-    printf("\n\nliste d'indices initiale : ["); 
-    afficherListeInteger(indices, instance->N);
+    int* indices = nouveauTableauDeValeursNulles(instance->N);
 
     float valeurMax = 0;
     int indiceMax = 0;
@@ -227,15 +192,15 @@ int* ordonancementRatioValeursDimensionCritique(struct Instance* instance)
     for (int compteur = 0; compteur < instance->N; compteur++)
     {
         //on récupère le ratio correspondant à l'indice à la position compteur
-        valeurMax = ratioValeurDimension(instance, indices[compteur]);
+        valeurMax = ratioValeurDimension(instance, solution, indices[compteur]);
         //on initialise l'indice correspondant à la valeur maximale
         indiceMax = compteur;
 
         for (int i = compteur+1; i < instance->N ; i++)
         {
-            if (ratioValeurDimension(instance, indices[i]) >= valeurMax) 
+            if (ratioValeurDimension(instance, solution, indices[i]) >= valeurMax) 
             {
-                valeurMax = ratioValeurDimension(instance, indices[i]);
+                valeurMax = ratioValeurDimension(instance, solution, indices[i]);
                 indiceMax = i;
             }
         }
@@ -249,45 +214,45 @@ int* ordonancementRatioValeursDimensionCritique(struct Instance* instance)
         }
     }
 
-    printf("\n\nliste d'indices triés selon leur ratio : ["); 
-    afficherListeInteger(indices, instance->N);
-
     float* listeValeurs = malloc(sizeof(float)*instance->N);
 
     for (size_t i = 0; i < instance->N; i++)
     {
-        listeValeurs[i] = ratioValeurDimension(instance, indices[i]);
+        listeValeurs[i] = ratioValeurDimension(instance, solution, indices[i]);
     }
     
-    printf("\n\nliste des ratios selon les indices triés selon leur ratio : ["); (listeValeurs, instance->N);
-
-
     return indices;
 }
 
-int* solutionHeuristique(struct Instance* instance, int methode)
+int* triSelonMethode(struct Instance* instance, int* solution, int methode)
 {
-    int* indicesSolution;
+    int* liste;
 
     switch (methode)
     {
     case 1:
-        indicesSolution = ordonancementAleatoire(instance);
+        liste = ordonancementAleatoire(instance);
         break;
     case 2:
-        indicesSolution = ordonancementValeursDecroissantes(instance);
+        liste = ordonancementValeursDecroissantes(instance);
         break;
     case 3:
-        indicesSolution = ordonancementRatioValeursPoids(instance);
+        liste = ordonancementRatioValeursPoids(instance);
         break;
     case 4:
-        indicesSolution = ordonancementRatioValeursDimensionCritique(instance);
+        liste = ordonancementRatioValeursDimensionCritique(instance, solution);
+        break;
+    case 5:
+        liste = ordonancementRatioValeursDimensionCritique(instance, solution);
         break;
     
     default:
         break;
     }
+}
 
+int* solutionHeuristique(struct Instance* instance, int methode, int dynamique)
+{
     //on créé un tableau de N valeurs initialisées à 0
     int* solutionDirecte = malloc(sizeof(int)*instance->N);
     for (int i = 0; i < instance->N; i++)
@@ -295,15 +260,38 @@ int* solutionHeuristique(struct Instance* instance, int methode)
         solutionDirecte[i] = 0;
     }
 
+    //on trie les indices
+    int* indicesSolution = triSelonMethode(instance, solutionDirecte, methode);
+
     for (size_t compteur = 0; compteur < instance->N; compteur++)
     {
-        solutionDirecte[indicesSolution[compteur]] = 1;
-
-        if(SolutionTestFaisabilite(instance, solutionDirecte) == 1)
+        //statique
+        if (dynamique == 0)
         {
-            solutionDirecte[indicesSolution[compteur]] = 0;
+            solutionDirecte[indicesSolution[compteur]] = 1;
+
+            if(SolutionTestFaisabilite(instance, solutionDirecte) == 1)
+            {
+                solutionDirecte[indicesSolution[compteur]] = 0;
+            }
+        }
+        //dynamique
+        else
+        {
+            //tant que l'élément est dans la liste, on regarde l'élément suivant
+            int i = compteur;
+            while (solutionDirecte[indicesSolution[i]]==1 && i<instance->N){i++;}
+            
+            solutionDirecte[indicesSolution[i]] = 1;
+
+            if(SolutionTestFaisabilite(instance, solutionDirecte) == 1)
+            {
+                solutionDirecte[indicesSolution[i]] = 0;
+            }
+            //on trie les indices à la fin de chaque itération
+            indicesSolution = triSelonMethode(instance, solutionDirecte, methode);
         }
     }
-
+    
     return solutionDirecte;
 }
