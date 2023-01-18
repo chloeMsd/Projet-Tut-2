@@ -21,26 +21,26 @@ int main(int argc, char **argv)
 {
 	//création du parser
 	struct Parser* parser = (struct Parser*) malloc(sizeof(struct Parser));
-	ParserInitialiserAvecFichier(parser, FICHIER);
+	ParserInitFromFile(parser, FICHIER);
 
-	for (size_t i = 0; i < parser->nb_instances; i++)
+	for (size_t l = 0; l < parser->nb_instances; l++)
 	{
 		//création de l'instance
 		struct Instance* instance1 = (struct Instance*) malloc(sizeof(struct Instance));
-		InstanceInit(instance1, parser->N, parser->M);
+		InstanceInit(instance1, parser->N[l], parser->M[l]);
 		
 		//attribution des variables
-		SetSolutionsOptimales(instance1, parser->solutions[0], parser->solutions[1]);
+		SetSolutionsOptimales(instance1, parser->solutions[l][0], parser->solutions[l][1]);
 		
-		SetSolution(instance1, parser->x);
+		SetSolution(instance1, parser->x[l]);
 
-		SetValeursObjets(instance1, parser->p);
+		SetValeursObjets(instance1, parser->p[l]);
 		
-		SetPoidsMaximum(instance1, parser->b);
+		SetPoidsMaximum(instance1, parser->b[l]);
 		
-		for (size_t i = 0; i < parser->M; i++)
+		for (size_t i = 0; i < parser->M[l]; i++)
 		{
-			addToPoidsObjets(instance1, parser->r[i], i);
+			addToPoidsObjets(instance1, parser->r[l][i], i);
 		}
 		
 		//affichage de l'instance
