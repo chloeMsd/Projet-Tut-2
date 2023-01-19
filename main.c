@@ -23,39 +23,36 @@ int main(int argc, char **argv)
 	struct Parser* parser = (struct Parser*) malloc(sizeof(struct Parser));
 	ParserInitFromFile(parser, FICHIER);
 
-	for (size_t l = 0; l < parser->nb_instances; l++)
+	//création de l'instance
+	struct Instance* instance1 = (struct Instance*) malloc(sizeof(struct Instance));
+	InstanceInit(instance1, parser->N, parser->M);
+	
+	//attribution des variables
+	SetSolutionsOptimales(instance1, parser->solutions[0], parser->solutions[1]);
+	
+	SetSolution(instance1, parser->x);
+
+	SetValeursObjets(instance1, parser->p);
+	
+	SetPoidsMaximum(instance1, parser->b);
+	
+	for (size_t i = 0; i < parser->M; i++)
 	{
-		//création de l'instance
-		struct Instance* instance1 = (struct Instance*) malloc(sizeof(struct Instance));
-		InstanceInit(instance1, parser->N[l], parser->M[l]);
-		
-		//attribution des variables
-		SetSolutionsOptimales(instance1, parser->solutions[l][0], parser->solutions[l][1]);
-		
-		SetSolution(instance1, parser->x[l]);
-
-		SetValeursObjets(instance1, parser->p[l]);
-		
-		SetPoidsMaximum(instance1, parser->b[l]);
-		
-		for (size_t i = 0; i < parser->M[l]; i++)
-		{
-			addToPoidsObjets(instance1, parser->r[l][i], i);
-		}
-		
-		//affichage de l'instance
-		PrintInstance(instance1);
-		
-		//heuristiques
-		int *liste = solutionHeuristique(instance1,1,0);
-		
-		//metaheuritsique
-
-		//afficherSolution(instance1, Metaheuristique_Tabou(instance1, methode, dynamique, 10, 50, 1));
-		afficherSolution(instance1, Metaheuristique_RL(instance1, METHODE, DYNAMIQUE));
-
-		printf("\n");
+		addToPoidsObjets(instance1, parser->r[i], i);
 	}
+	
+	//affichage de l'instance
+	PrintInstance(instance1);
+	
+	//heuristiques
+	int *liste = solutionHeuristique(instance1,1,0);
+	
+	//metaheuritsique
+
+	//afficherSolution(instance1, Metaheuristique_Tabou(instance1, methode, dynamique, 10, 50, 1));
+	afficherSolution(instance1, Metaheuristique_RL(instance1, METHODE, DYNAMIQUE));
+
+	printf("\n");
 	
 	return 0;
 }

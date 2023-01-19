@@ -10,23 +10,23 @@ struct Parser {
     int nb_instances;
 
     //le nombre d'objet contenus dans l'instance (N)
-    int* N;
+    int N;
 
     //le nombre de dimensions (M)
-    int* M;
+    int M;
 
     //deux solutions optimales de l'instance
-    int* solutions[2];
+    int solutions[2];
 
     //indique si l'objet fait partie de la solution optimale (0 = non, 1 = oui)
-    int** x;
+    int* x;
 
     //la valeur de chaque objet
-    int** p;
+    int* p;
 
     //le poid de chaque objet dans chaque dimension (ex : [[1,2,3][4,5,6][7,8,9]]
-    int*** r;
+    int** r;
 
     //le poid maximum possible de l'instance dans chaque dimension
-    int** b;
+    int* b;
 };
