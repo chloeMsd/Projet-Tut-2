@@ -11,17 +11,19 @@ void InstanceInitFromParser(struct Instance* instance, struct Parser* parser)
     //initialisation du nombre de dimensions
     instance->M = parser->M;
 
-    //allocation des espaces memoires nécessaires
+    //initialisation de p
     instance->p = malloc(sizeof(int)*parser->N);
+    memcpy(instance->p, parser->p, sizeof(int)*parser->N);
+
+    //initialisation de r
     instance->r = malloc(sizeof(int*)*parser->M);
     for (int i = 0; i < parser->M; i++){
         instance->r[i] = malloc(instance->N * sizeof(int));
+        memcpy(instance->r[i], parser->r[i], sizeof(int) * parser->N);
     }
-    instance->b = malloc(sizeof(int)*parser->M);
 
-    //copie des valeurs du parser dans l'instance
-    memcpy(instance->p, parser->p, sizeof(int)*parser->N);
-    memcpy(instance->r, parser->r, sizeof(int*)*parser->M*sizeof(int)*parser->N);
+    //initialisation de b
+    instance->b = malloc(sizeof(int)*parser->M);
     memcpy(instance->b, parser->b, sizeof(int)*parser->M);
 }
 

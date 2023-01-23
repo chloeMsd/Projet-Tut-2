@@ -22,8 +22,9 @@
 
 int main(int argc, char **argv)
 {
-	//création du parser
+	//alocation des espaces mémoire pour le Parser et l'Instance
 	struct Parser* parser = (struct Parser*) malloc(sizeof(struct Parser));
+	struct Instance* instance = (struct Instance*) malloc(sizeof(struct Instance));
 	
 	//ouverture du fichier et récupération du nombre d'instances
 	parser->fichier = fopen(FICHIER, "r");
@@ -36,13 +37,11 @@ int main(int argc, char **argv)
 		//Lecture du fichier et initialisation du parseur
 		ParserLireInstance(parser, AFFICHER_PARSEUR);
 
+		//création de l'instance
+		InstanceInitFromParser(instance, parser);
+		PrintInstance(instance);
 
 		/*
-			//création de l'instance
-			struct Instance* instance = (struct Instance*) malloc(sizeof(struct Instance));
-			InstanceInitFromParser(instance, parser);
-			PrintInstance(instance);
-
 			//heuristiques
 			int *liste = solutionHeuristique(instance,1,0);
 			
