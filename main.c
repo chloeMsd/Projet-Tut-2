@@ -17,45 +17,44 @@
 //1 = true, 0 = false
 #define DYNAMIQUE 1
 
+//indique si on affiche les valeurs du parseur ou non 
+#define AFFICHER_PARSEUR 1
+
 int main(int argc, char **argv)
 {
 	//création du parser
 	struct Parser* parser = (struct Parser*) malloc(sizeof(struct Parser));
-	ParserInitFromFile(parser, FICHIER);
+	
+	//ouverture du fichier et récupération du nombre d'instances
+	parser->fichier = fopen(FICHIER, "r");
+    fscanf(parser->fichier, "%d", &parser->nb_instances);
+
+	printf("\n--- DEMARRAGE DU PROGRAMME ---\n\nNombre d'instances à lire : %d\n\n", parser->nb_instances);
 
 	for (size_t l = 0; l < parser->nb_instances; l++)
 	{
-		//création de l'instance
-		struct Instance* instance1 = (struct Instance*) malloc(sizeof(struct Instance));
-		InstanceInit(instance1, parser->N[l], parser->M[l]);
-		
-		//attribution des variables
-		SetSolutionsOptimales(instance1, parser->solutions[l][0], parser->solutions[l][1]);
-		
-		SetSolution(instance1, parser->x[l]);
+		//Lecture du fichier et initialisation du parseur
+		ParserLireInstance(parser, AFFICHER_PARSEUR);
 
-		SetValeursObjets(instance1, parser->p[l]);
-		
-		SetPoidsMaximum(instance1, parser->b[l]);
-		
-		for (size_t i = 0; i < parser->M[l]; i++)
-		{
-			addToPoidsObjets(instance1, parser->r[l][i], i);
-		}
-		
-		//affichage de l'instance
-		PrintInstance(instance1);
-		
-		//heuristiques
-		int *liste = solutionHeuristique(instance1,1,0);
-		
-		//metaheuritsique
 
-		//afficherSolution(instance1, Metaheuristique_Tabou(instance1, methode, dynamique, 10, 50, 1));
-		afficherSolution(instance1, Metaheuristique_RL(instance1, METHODE, DYNAMIQUE));
+		/*
+			//création de l'instance
+			struct Instance* instance = (struct Instance*) malloc(sizeof(struct Instance));
+			InstanceInitFromParser(instance, parser);
+			PrintInstance(instance);
 
-		printf("\n");
+			//heuristiques
+			int *liste = solutionHeuristique(instance,1,0);
+			
+			//metaheuritsique
+
+			//afficherSolution(instance, Metaheuristique_Tabou(instance, methode, dynamique, 10, 50, 1));
+			afficherSolution(instance, Metaheuristique_RL(instance, METHODE, DYNAMIQUE));
+		*/
 	}
 	
+	//fermeture du fichier
+	fclose(parser->fichier);
+
 	return 0;
 }

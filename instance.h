@@ -8,12 +8,6 @@ struct Instance {
     //le nombre de dimensions (M)
     int M;
 
-    //deux solutions optimales de l'instance
-    int solutions[2];
-
-    //indique si l'objet fait partie de la solution optimale (0 = non, 1 = oui)
-    int* x;
-
     //la valeur de chaque objet
     int* p;
 

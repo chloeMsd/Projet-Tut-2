@@ -3,43 +3,34 @@
 #include "instance.h"
 
 //initialise l'instance donnée en paramètre
-void InstanceInit(struct Instance* instance, int nb_objets, int dim)
+void InstanceInitFromParser(struct Instance* instance, struct Parser* parser)
 {
-    instance->N = nb_objets;
-    instance->M = dim;
-    instance->x = malloc(sizeof(int)*nb_objets);
-    instance->p = malloc(sizeof(int)*nb_objets);
-    instance->r = malloc(sizeof(int*)*dim);
-    for (int i = 0; i < dim; i++)
-	{
+    //initialisation du nombre d'objets
+    instance->N = parser->N;
+
+    //initialisation du nombre de dimensions
+    instance->M = parser->M;
+
+    //allocation des espaces memoires nécessaires
+    instance->p = malloc(sizeof(int)*parser->N);
+    instance->r = malloc(sizeof(int*)*parser->M);
+    for (int i = 0; i < parser->M; i++){
         instance->r[i] = malloc(instance->N * sizeof(int));
     }
-    instance->b = malloc(sizeof(int)*dim);
+    instance->b = malloc(sizeof(int)*parser->M);
+
+    //copie des valeurs du parser dans l'instance
+    memcpy(instance->p, parser->p, sizeof(int)*parser->N);
+    memcpy(instance->r, parser->r, sizeof(int*)*parser->M*sizeof(int)*parser->N);
+    memcpy(instance->b, parser->b, sizeof(int)*parser->M);
 }
 
 //libère les ressources allouées par l'instance donnée en paramètre
 void InstanceFinalize(struct Instance* instance)
 {
-    free(instance->x);
     free(instance->p);
     free(instance->r);
     free(instance->b);
-}
-
-void SetSolutionsOptimales(struct Instance* instance, int solution1, int solution2)
-{
-    instance->solutions[0] = solution1;
-    instance->solutions[1] = solution2;
-}
-
-void SetSolution(struct Instance* instance, int* valeurs)
-{
-    instance->x = valeurs;
-}
-
-void SetValeursObjets(struct Instance* instance, int* valeurs)
-{
-    instance->p = valeurs;
 }
 
 void addToPoidsObjets(struct Instance* instance, int* valeurs, int index)
@@ -50,27 +41,13 @@ void addToPoidsObjets(struct Instance* instance, int* valeurs, int index)
     instance->r[index] = valeurs;
 }
 
-void SetPoidsMaximum(struct Instance* instance, int* valeurs)
-{
-    instance->b = valeurs;
-}
-
 //fonction qui affiche les valeurs de l'instance
 void PrintInstance(struct Instance* instance)
 {
     printf("-- INSTANCE --\n");
     printf("Nombre objets : %d\n", instance->N);
     printf("Dimension : %d\n", instance->M);
-	printf("Solution 1 : %d\nSolution 2 : %d\n", instance->solutions[0], instance->solutions[1]);
-    
-    printf("Solutions : [");
-	for (int i = 0; i < instance->N; i++)
-	{
-		printf("%d",instance->x[i]); 
-        if (i+1 < instance->N) printf(",");
-	}
-	printf("]\n");
-    
+
     printf("Valeurs objets : [");
 	for (int i = 0; i < instance->N; i++)
 	{

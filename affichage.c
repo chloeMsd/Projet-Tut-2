@@ -7,8 +7,9 @@ void afficherListeInteger(int* liste, int taille)
     for (int i = 0; i < taille; i++)
     {
         if (i == taille-1) printf("%d]", liste[i]);
-        else printf("%d;", liste[i]);
+        else printf("%d,", liste[i]);
     }
+    printf("\n\n");
 }
 
 void afficherListeFloating(float* liste, int taille)
@@ -18,8 +19,9 @@ void afficherListeFloating(float* liste, int taille)
     for (int i = 0; i < taille; i++)
     {
         if (i == taille-1) printf("%.3f]", liste[i]);
-        else printf("%.3f, ", liste[i]);
+        else printf("%.3f,", liste[i]);
     }
+    printf("\n\n");
 }
 
 void afficherSolution(struct Instance* instance, int* solution)
