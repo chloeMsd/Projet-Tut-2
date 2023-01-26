@@ -71,7 +71,7 @@ void afficherMetaheuristiques(struct Instance* instance)
     {
         RL[i] = SolutionFonctionObjectif(instance, Metaheuristique_RL(instance, i+1));
         RT[i] = SolutionFonctionObjectif(instance, Metaheuristique_Tabou(instance, i+1, 10, 50, 1));
-        RG[i] = 0;
+        RG[i] = SolutionFonctionObjectif(instance, Metaheuristique_Genetique(instance, 10, 50, 0.5f));;
     }
 
     printf("\nRecherche LOCALE     %d      |  %d        |  %d      |  %d          |  %d         |  %d", RL[0], RL[1], RL[2], RL[3], RL[4], RL[5]);

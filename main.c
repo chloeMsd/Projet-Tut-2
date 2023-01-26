@@ -14,7 +14,7 @@
 #define AFFICHER_PARSEUR 0
 #define AFFICHER_INSTANCE 0
 #define AFFICHER_HEURISTIQUES 1
-#define AFFICHER_METAHEURISTIQUES 0
+#define AFFICHER_METAHEURISTIQUES 1
 
 int main(int argc, char **argv)
 {
@@ -47,16 +47,10 @@ int main(int argc, char **argv)
 		}
 
 		//metaheuristiques
-		if (AFFICHER_HEURISTIQUES)
+		if (AFFICHER_METAHEURISTIQUES)
 		{
 			afficherMetaheuristiques(instance);
 		}
-
-		//metaheuristique
-		/*
-		afficherSolution(instance, Metaheuristique_Tabou(instance, 3, 10, 50, 1));
-		afficherSolution(instance, Metaheuristique_RL(instance, 3));
-		*/
 	}
 	
 	//fermeture du fichier

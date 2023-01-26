@@ -178,135 +178,102 @@ int* Metaheuristique_Tabou(struct Instance* instance, int methode, int nbIterati
 	return SolutionBest;
 }
 
-/*
-int* Metaheuristique_Genetique(struct Instance* instance, int methode, int nbIterationsMax, int taillePopu, int Pmut)
+//génère une liste de couples de solutions par tournoi
+int** indicesParentsTournoi(int nombreParents)
 {
-	int **PopulationCourante = malloc(instance->N*sizeof(int));
-	for (int i = 0; i < taillePopu; i++)
-	{
-        PopulationCourante[i] = malloc(instance->N * sizeof(int));
-    }
+	int* indicesAlea[2] = malloc(nombreParents/2*sizeof(int));
+	int* indices = nouveauTableauDeUnATaille(nombreParents);
+
+	return indicesAlea;
+}
+
+//génère une solution enfant issue de deux solutions parent
+int* croisement(struct Instance* instance, int* solutionParent1, int* solutionParent2)
+{
+	int* solutionEnfant = malloc(instance->N*sizeof(int));
 	
-	int **PopulationEnfant = malloc(instance->N*sizeof(int));
-	for (int i = 0; i < taillePopu; i++)
+	return solutionEnfant;
+}
+
+//indique si une mutation doit avoir lieu
+int muter(int proba)
+{
+	return 1;
+}
+
+//indique si une mutation doit avoir lieu
+int* mutation(int* solution, int tailleSolution)
+{
+	int* solutionMutante = malloc(tailleSolution*sizeof(int));
+	memcpy(solutionMutante, solution, tailleSolution*sizeof(int));
+
+	return solutionMutante;
+}
+
+int* renouvellement(int* populationCourante, int* populationEnfant, int taillePop)
+{
+	int* nouvellePopulation = malloc(taillePop*sizeof(int));
+
+	return nouvellePopulation;
+}
+
+int* Metaheuristique_Genetique(struct Instance* instance, int taillePopu, int nbIterationsMax, float Pmut)
+{
+	//calcul d'une population initiale
+	int** populationCourante = malloc(taillePopu*instance->N*sizeof(int));
+
+	for (size_t i = 0; i < taillePopu; i++)
 	{
-        PopulationEnfant[i] = malloc(instance->N * sizeof(int));
-    }
-	
-	int *SolutionBest = malloc(instance->N*sizeof(int));
-	int *Solution = malloc(instance->N*sizeof(int));
-	int fBest=0;
-	
-	for (int i=0; i<taillePopu; i++)
-	{
-		PopulationCourante[i]=solutionHeuristique(instance, methode);
+		populationCourante[i] = solutionHeuristique(instance, 1);
 	}
-	for (int i=0; i<taillePopu; i++)
+	
+	//meilleur individu de la population courante
+	int *SolutionBest = malloc(instance->N*sizeof(int));
+	memcpy(SolutionBest, populationCourante[0], instance->N*sizeof(int) );
+
+	for (size_t i = 1; i < taillePopu; i++)
 	{
-		if (SolutionFonctionObjectif(instance,PopulationCourante[i]) > fBest)
+		if (SolutionFonctionObjectif(instance, populationCourante[i]) > SolutionFonctionObjectif(instance, SolutionBest))
 		{
-			memcpy(SolutionBest, PopulationCourante[i], instance->N*sizeof(int));
+			SolutionBest = memcpy(SolutionBest, populationCourante[i], instance->N*sizeof(int) );
 		}
 	}
 	
-	int *indices=malloc(instance->N*sizeof(int));
-	int compteur=0;
-	printf("\n\nSolution best : "); afficherListeInteger(SolutionBest, instance->N);
-	
+	int fBest = SolutionFonctionObjectif(instance, SolutionBest);
+
+	int compteur = 0;
 	while (compteur < nbIterationsMax)
 	{
-		for (int i = 0; i < dim; i++)
-		{
-			for (int j=0 ; j< instance->N; j++){
-				PopulationEnfant[i][j]=-1
+		int** populationEnfant = malloc(taillePopu*instance->N*sizeof(int));
+		int** indicesParents = indicesParentsTournoi(taillePopu);
 
+		//creation des enfants
+		for (size_t i = 0; i < taillePopu/2; i++)
+		{
+			populationEnfant[indicesParents[i][0]] = croisement(instance, populationCourante[indicesParents[i][0]], populationCourante[indicesParents[i][1]]);
+			populationEnfant[indicesParents[i][1]] = croisement(instance, populationCourante[indicesParents[i][0]], populationCourante[indicesParents[i][1]]);
+		}
+
+		//bestSolution et mutations
+		for (size_t i = 0; i < taillePopu; i++)
+		{
+			if (SolutionFonctionObjectif(instance, populationEnfant[i]) > SolutionFonctionObjectif(instance, SolutionBest))
+			{
+				SolutionBest = memcpy(SolutionBest, populationEnfant[i], instance->N*sizeof(int) );
+				fBest = SolutionFonctionObjectif(instance, SolutionBest);
 			}
+
+			if (muter(Pmut))
+			{
+				memcpy(populationEnfant[i], mutation(populationEnfant[i], instance->N*sizeof(int)), instance->N*sizeof(int));
+				if (SolutionFonctionObjectif(instance, populationEnfant[i]) > SolutionFonctionObjectif(instance, SolutionBest))
+				{
+					SolutionBest = memcpy(SolutionBest, populationEnfant[i], instance->N*sizeof(int) );
+					fBest = SolutionFonctionObjectif(instance, SolutionBest);
+				}
+			}
+
+			memcpy(populationCourante, renouvellement(populationCourante, populationEnfant, taillePopu), taillePopu*sizeof(int));
 		}	
-		
-		for (int i=0; i < instance->N; i++)
-		{
-			srand(time(0)); 
-
-			int j = rand() % (instance->N-i) + i;
-			int temp = indices[i];
-			indices[i] = indices[j];
-			indices[j] = temp;
-		}
-		
-		int a=0;
-		int compteurPopEnfant=0;
-		
-		for (int i=0; i < (taillePopu/2); i++)
-		{
-			if (SolutionFonctionObjectif(instance, PopulationCourante[indices[a]]) < SolutionFonctionObjectif(instance, PopulationCourante[indices[a+1]]))
-			{
-				PopulationEnfant[compteurPopEnfant]= PopulationCourante[indices[a+1]];
-			} 
-			else{
-				PopulationEnfant[compteurPopEnfant]= PopulationCourante[indices[a]];
-			}
-			
-			a++;
-			compteurPopEnfant++;
-			
-			if (SolutionFonctionObjectif(instance, PopulationCourante[indices[a]]) < SolutionFonctionObjectif(instance, PopulationCourante[indices[a+1]]))
-			{
-				PopulationEnfant[compteurPopEnfant]= PopulationCourante[indices[a+1]];
-			} 
-			else{
-				PopulationEnfant[compteurPopEnfant]= PopulationCourante[indices[a]];
-			}
-			
-			a++;
-			compteurPopEnfant++;
-			
-		}
-		
-		for (int i=0; i < taillePopu; i++)
-		{
-			if (SolutionFonctionObjectif(instance, PopulationEnfant[i]) > fBest)
-			{
-				fBest = SolutionFonctionObjectif(instance, PopulationEnfant[i]);
-				memcpy(SolutionBest, PopulationEnfant[i], instance->N*sizeof(int));
-			}			
-
-			if (Pmut != 0)
-			{
-				Solution = Mutation(Population[i]);
-				
-				if (SolutionFonctionObjectif(instance, Solution) > SolutionFonctionObjectif(instance, Population[i]))
-				{
-					memcpy(PopulationEnfant[i], Solution ,instance->N*sizeof(int));
-				}
-				
-				if (SolutionFonctionObjectif(instance, PopulationEnfant[i]) > fBest)
-				{
-					fBest = SolutionFonctionObjectif(instance, PopulationEnfant[i]);
-					memcpy(SolutionBest, PopulationEnfant[i], instance->N*sizeof(int));
-				}
-			}
-		}
-		
-		// faut faire un renouvellement de PopulationCourante
-		//un algo qui prend les n meilleurs solutions de population courante
-		compteur++;
-	}
-	return SolutionBest;
+	}	
 }
-
-
-//garde les n meilleurs solutions de l'ensemble de solutions
-int *MeilleursSolutions(struct Instance* instance, int taillePopu, int **Solutions, int n){
-	
-	int *OrdresMeilleursIndice=malloc(taillePopu*sizeof(int));
-	
-	int fBest=0;
-	for(int i=0; i< taillePopu; i++)
-	{
-		if (SolutionFonctionObjectif(instance, Solutions[i]) >= fBest )
-		{
-			
-		}
-	} 
-}
-*/
