@@ -6,12 +6,10 @@
 #include "listeTabou.h"
 #include "listeTabou.c"
 
-int* Metaheuristique_RL(struct Instance* instance, int methode, int dynamique)
+int* Metaheuristique_RL(struct Instance* instance, int methode)
 {	
-	printf("\n\n-- METAHEURISTIQUE RL --");
-
 	//récupération d'une solution de base
-	int *SolutionCourante = solutionHeuristique(instance, methode, dynamique);
+	int *SolutionCourante = solutionHeuristique(instance, methode);
 	
 	//initialisation de la meilleure solution
 	int *SolutionBest = malloc(instance->N*sizeof(int));
@@ -78,22 +76,19 @@ int* Metaheuristique_RL(struct Instance* instance, int methode, int dynamique)
 		
 	}	
 	
-	afficherPoidsSolutionSac(instance, SolutionBest);
-
 	return SolutionBest;
 }
 
 //methode = numero de l'heuristique; aspi = 1 si aspiration
-int* Metaheuristique_Tabou(struct Instance* instance, int methode, int dynamique, int nbIterationsMax, int tailleListeTabou, int aspi)
+int* Metaheuristique_Tabou(struct Instance* instance, int methode, int nbIterationsMax, int tailleListeTabou, int aspi)
 {	
-	printf("\n\n-- METAHEURISTIQUE TABOU --");
 	//initialisation d'une liste tabou de taille N
 	//cette liste stocke des couples d'entier
-	struct ListeTabou* listeTabou;
+	struct ListeTabou* listeTabou = (struct ListeTabou*) malloc(sizeof(struct ListeTabou*));;
 	ListeTabouInit(listeTabou, tailleListeTabou);
 	
 	//récupération d'une solution de base
-	int *SolutionCourante = solutionHeuristique(instance, methode, dynamique);
+	int *SolutionCourante = solutionHeuristique(instance, methode);
 	
 	//initialisation de la meilleure solution
 	int *SolutionBest = malloc(instance->N*sizeof(int));
@@ -179,8 +174,6 @@ int* Metaheuristique_Tabou(struct Instance* instance, int methode, int dynamique
 		fPrec = fCourant;
 		compteur++;
 	}	
-
-	afficherPoidsSolutionSac(instance, SolutionBest);
 
 	return SolutionBest;
 }
