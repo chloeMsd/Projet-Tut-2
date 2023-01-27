@@ -2,23 +2,6 @@
 #include <stdlib.h>
 #include "parser.h"
 
-printParser(struct Parser* parser)
-{
-	printf("\n--- Parser ---\n\n");
-
-	printf("N = %d\n\nM = %d\n\n", parser->N, parser->M);
-	
-	printf("Valeurs :\n"); 
-	afficherListeInteger(parser->p, parser->N);
-
-	for (int j=0;j<parser->M;j++){
-		printf("Poids dim %d :\n", j); afficherListeInteger(parser->r[j], parser->N);
-	}
-
-	printf("Poids max : "); 
-	afficherListeInteger(parser->b, parser->M);
-}
-
 //lis une instance du fichier, stocke ses informations dans le parser. 
 //si afficherParser = 1, il y aura un affichage des informations du parser dans la console.
 void ParserLireInstance(struct Parser* parser, int afficherParser)

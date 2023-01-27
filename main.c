@@ -13,8 +13,11 @@
 //indique si on affiche les valeurs
 #define AFFICHER_PARSEUR 0
 #define AFFICHER_INSTANCE 0
-#define AFFICHER_HEURISTIQUES 1
-#define AFFICHER_METAHEURISTIQUES 1
+
+//variables utilisées pour la métaheuristique Tabou
+#define TABOU_TAILLE_LISTE 80
+#define TABOU_NB_ITERATIONS 20
+#define TABOU_ASPI 1
 
 int main(int argc, char **argv)
 {
@@ -36,21 +39,19 @@ int main(int argc, char **argv)
 		//création de l'instance
 		InstanceInitFromParser(instance, parser, AFFICHER_INSTANCE);
 
+		//affichage
+		printf("\n\n"); 
+		printf("<INSTANCE %d>---------------------\n\n",i+1);
+		printf("Ordonnancement       aleatoire  |  decroissant  |  ratio v/p  |  ratio v/d sta  | ratio v/d dyn  |  croissant\n", i+1);
+		
 		//heuristiques
-		if (AFFICHER_HEURISTIQUES)
-		{
-			printf("\n\n"); 
-			printf("<INSTANCE %d>---------------------\n\n",i+1);
-			printf("Ordonnancement       aleatoire  |  decroissant  |  ratio v/p  |  ratio v/d sta  | ratio v/d dyn  |  croissant\n", i+1);
-			
-			afficherHeuristiques(instance);
-		}
-
+		afficherHeuristiques(instance);
+		
 		//metaheuristiques
-		if (AFFICHER_METAHEURISTIQUES)
-		{
-			afficherMetaheuristiques(instance);
-		}
+		afficherMetaheuristiques(instance, TABOU_NB_ITERATIONS, TABOU_TAILLE_LISTE, TABOU_ASPI);
+
+		//désallocation de l'instance
+		InstanceFinalize(instance);
 	}
 	
 	//fermeture du fichier
@@ -58,3 +59,4 @@ int main(int argc, char **argv)
 
 	return 0;
 }
+

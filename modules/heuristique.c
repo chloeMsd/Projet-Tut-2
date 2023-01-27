@@ -16,9 +16,7 @@ int sommePoids(struct Instance* instance, int indice)
     return somme;
 }
 
-//entree :  l'instance
-//          la solution
-//sortie :  la dimension de l'instance qui a le moins de place
+//retourne la dimension de l'instance qui a le moins de place
 int valeurDimensionCritique(struct Instance* instance, int* solution)
 {
     int* poids = SolutionCalculDimension(instance, solution);
@@ -35,16 +33,19 @@ int valeurDimensionCritique(struct Instance* instance, int* solution)
     return dimCritique;
 }
 
+//retourne le ratio entre la valeur d'un objet de l'instance et la somme des poids de l'instance
 float ratioValeurPoids(struct Instance* instance, int indice)
 {
     return (float) instance->p[indice] / (float) sommePoids(instance, indice);
 }
 
+//retourne le ratio entre la valeur d'un objet de l'instance et la valeur de la dimension critique
 float ratioValeurDimension(struct Instance* instance, int* solution, int indice)
 {
     return (float) instance->p[indice] / (float) valeurDimensionCritique(instance, solution);
 }
 
+//retourne un tableau de valeurs nulles
 int* nouveauTableauDeValeursNulles(int taille)
 {
     int* indices = malloc(sizeof(int)*taille);
@@ -58,6 +59,7 @@ int* nouveauTableauDeValeursNulles(int taille)
     return indices;
 }
 
+//retourne un tableau de 1 à n
 int* nouveauTableauDeUnATaille(int taille)
 {
     int* indices = malloc(sizeof(int)*taille);
@@ -78,10 +80,10 @@ int* ordonancementAleatoire(struct Instance* instance)
 {
     int* indices = nouveauTableauDeUnATaille(instance->N);
 
+    srand(clock()); 
+    
     for (int i = 0; i < instance->N-1; i++)
     {
-        srand(time(0)); 
-
         int j = rand() % (instance->N-i) + i;
         int temp = indices[i];
         indices[i] = indices[j];
@@ -90,7 +92,6 @@ int* ordonancementAleatoire(struct Instance* instance)
 
     return indices;
 }
-
 
 //METHODE NUMERO 2
 //entrée :      instance dont on doit trier les éléments
@@ -138,7 +139,6 @@ int* ordonancementValeursDecroissantes(struct Instance* instance)
     return indices;
 }
 
-
 //METHODE NUMERO 3
 //entrée :      instance dont on doit trier les éléments
 //sortie :      une liste triée de taille N dont chaque valeur représente l'indice d'un objet
@@ -184,7 +184,6 @@ int* ordonancementRatioValeursPoids(struct Instance* instance)
     
     return indices;
 }
-
 
 //METHODE NUMERO 4
 //entrée :      instance dont on doit trier les éléments, la solution actuelle
@@ -278,7 +277,7 @@ int* ordonancementValeursCroissantes(struct Instance* instance)
     return indices;
 }
 
-
+//retourne une liste d'indices triés selon la méthode choisie
 int* triSelonMethode(struct Instance* instance, int* solution, int methode)
 {
     int* liste;
@@ -313,9 +312,12 @@ int* triSelonMethode(struct Instance* instance, int* solution, int methode)
     default:
         break;
     }
+
+    return liste;
 }
 
-
+//retourne la solution dans laquelle on essaye d'ajouter un objet
+//si les poids de l'objet ne font pas déborder le sac, on l'ajoute.
 int* ajouterObjetDansSacSiPlace(struct Instance* instance, int* solution, int indiceObjet)
 {
     solution[indiceObjet] = 1;
@@ -328,7 +330,7 @@ int* ajouterObjetDansSacSiPlace(struct Instance* instance, int* solution, int in
     return solution;
 }
 
-
+//retourne l'indice du premier objet trouvé qui n'est pas dans la solution 
 int indicePremierElementPasDansLaSolution(struct Instance* instance, int* solution, int* indices)
 {
     int i = 0;
@@ -341,6 +343,7 @@ int indicePremierElementPasDansLaSolution(struct Instance* instance, int* soluti
     return i;
 }
 
+//renvoie une solution (tableau de 0 et 1) de l'instance avec une méthode choisie
 int* solutionHeuristique(struct Instance* instance, int methode)
 {
     int* solutionDirecte = nouveauTableauDeValeursNulles(instance->N);

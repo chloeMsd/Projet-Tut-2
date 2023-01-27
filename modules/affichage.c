@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+//affiche une liste d'entiers 
 void afficherListeInteger(int* liste, int taille)
 {
     printf("[");
@@ -12,6 +13,7 @@ void afficherListeInteger(int* liste, int taille)
     printf("\n\n");
 }
 
+//affiche une liste de réels
 void afficherListeFloating(float* liste, int taille)
 {
     printf("[");
@@ -24,6 +26,9 @@ void afficherListeFloating(float* liste, int taille)
     printf("\n\n");
 }
 
+//affiche une solution :
+//  -les indices des éléments solution 
+//  -la valeur totale de la solution
 void afficherSolution(struct Instance* instance, int* solution)
 {
 	printf("\n\nSolution : ");
@@ -38,6 +43,10 @@ void afficherSolution(struct Instance* instance, int* solution)
     printf("\nSomme totale des valeurs : %d\n", SolutionFonctionObjectif(instance, solution));
 }
 
+//affiche le détail des poids d'une solution :
+//  -la capacité maximale de chaque dimension du sac 
+//  -la place prise dans chaque dimension par la solution
+//  -la place restante (négatif si la solution dépasse la capacité maximale)
 void afficherPoidsSolutionEtSac(struct Instance* instance, int* solution)
 {
     int* poids = SolutionCalculDimension(instance, solution);
@@ -50,6 +59,7 @@ void afficherPoidsSolutionEtSac(struct Instance* instance, int* solution)
 	}
 }
 
+//affiche toutes les heuristiques pour une instance donnée
 void afficherHeuristiques(struct Instance* instance)
 {
     int valeurs[6];
@@ -61,7 +71,8 @@ void afficherHeuristiques(struct Instance* instance)
     printf("HEURISTIQUE          %d      |  %d        |  %d      |  %d          |  %d         |  %d", valeurs[0], valeurs[1], valeurs[2], valeurs[3], valeurs[4], valeurs[5]);
 }
 
-void afficherMetaheuristiques(struct Instance* instance)
+//affiche toutes les métaheuristiques pour une instance donnée
+void afficherMetaheuristiques(struct Instance* instance, int TABOUnbIterationsMax, int tailleListeTabou, int TABOUaspi)
 {
     int RL[6];
     int RT[6];
@@ -70,11 +81,64 @@ void afficherMetaheuristiques(struct Instance* instance)
     for (int i = 0; i < 6; i++)
     {
         RL[i] = SolutionFonctionObjectif(instance, Metaheuristique_RL(instance, i+1));
-        RT[i] = SolutionFonctionObjectif(instance, Metaheuristique_Tabou(instance, i+1, 10, 50, 1));
-        RG[i] = SolutionFonctionObjectif(instance, Metaheuristique_Genetique(instance, 10, 50, 0.5f));;
+        RT[i] = SolutionFonctionObjectif(instance, Metaheuristique_Tabou(instance, i+1, TABOUnbIterationsMax, tailleListeTabou, TABOUaspi));
     }
 
     printf("\nRecherche LOCALE     %d      |  %d        |  %d      |  %d          |  %d         |  %d", RL[0], RL[1], RL[2], RL[3], RL[4], RL[5]);
     printf("\nRecherche TABOUE     %d      |  %d        |  %d      |  %d          |  %d         |  %d", RT[0], RT[1], RT[2], RT[3], RT[4], RT[5]);
-    printf("\nRecherche GENETIQUE  %d      |  %d        |  %d      |  %d          |  %d         |  %d", RG[0], RG[1], RG[2], RG[3], RG[4], RG[5]);
+}
+
+//fonction qui affiche les valeurs de l'instance
+void PrintInstance(struct Instance* instance)
+{
+    printf("-- INSTANCE --\n");
+    printf("Nombre objets : %d\n", instance->N);
+    printf("Dimension : %d\n", instance->M);
+
+    printf("Valeurs objets : [");
+	for (int i = 0; i < instance->N; i++)
+	{
+		printf("%d",instance->p[i]); 
+        if (i+1 < instance->N) printf(",");
+	}
+	printf("]\n");
+    
+    printf("Poids objets : [\n\n");
+	for (int i = 0; i < instance->M; i++)
+	{
+        printf("[");
+        for (int j = 0; j < instance->N; j++)
+        {
+            printf("%d", instance->r[i][j]); 
+            if (i+1 < instance->N) printf(",");
+        }
+	    printf("]\n\n");
+	}
+	printf("]\n\n");
+
+    printf("Poids maximaux : [");
+	for (int i = 0; i < instance->M; i++)
+	{
+		printf("%d",instance->b[i]); 
+        if (i+1 < instance->M) printf(",");
+	}
+	printf("]\n");
+}
+
+//fonction qui affiche les valeurs du parser
+void printParser(struct Parser* parser)
+{
+	printf("\n--- Parser ---\n\n");
+
+	printf("N = %d\n\nM = %d\n\n", parser->N, parser->M);
+	
+	printf("Valeurs :\n"); 
+	afficherListeInteger(parser->p, parser->N);
+
+	for (int j=0;j<parser->M;j++){
+		printf("Poids dim %d :\n", j); afficherListeInteger(parser->r[j], parser->N);
+	}
+
+	printf("Poids max : "); 
+	afficherListeInteger(parser->b, parser->M);
 }

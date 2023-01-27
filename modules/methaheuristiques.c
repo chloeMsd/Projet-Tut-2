@@ -6,6 +6,8 @@
 #include "listeTabou.h"
 #include "listeTabou.c"
 
+//implémentation de la recherche locale.
+//retourne une solution de l'instance.
 int* Metaheuristique_RL(struct Instance* instance, int methode)
 {	
 	//récupération d'une solution de base
@@ -79,7 +81,8 @@ int* Metaheuristique_RL(struct Instance* instance, int methode)
 	return SolutionBest;
 }
 
-//methode = numero de l'heuristique; aspi = 1 si aspiration
+//implémentation de la recherche tabou.
+//retourne une solution de l'instance.
 int* Metaheuristique_Tabou(struct Instance* instance, int methode, int nbIterationsMax, int tailleListeTabou, int aspi)
 {	
 	//initialisation d'une liste tabou de taille N
@@ -178,21 +181,47 @@ int* Metaheuristique_Tabou(struct Instance* instance, int methode, int nbIterati
 	return SolutionBest;
 }
 
-//génère une liste de couples de solutions par tournoi
-int** indicesParentsTournoi(int nombreParents)
-{
-	int* indicesAlea[2] = malloc(nombreParents/2*sizeof(int));
-	int* indices = nouveauTableauDeUnATaille(nombreParents);
 
-	return indicesAlea;
+/*--------------------------------------------------------*/
+
+
+//génère une liste de couples de solutions par tournoi
+int** indicesParentsTournoi(int n)
+{
+    int** indicesAlea = malloc(sizeof(int*) * n); //allouer la mémoire pour la liste
+    int i, temp, randomIndex;
+
+    for (i = 0; i < n; i++) {
+        indicesAlea[i] = (int*) malloc(sizeof(int) * 2); //allouer la mémoire pour chaque couple
+    }
+    for (i = 0; i < n; i++) {
+        indicesAlea[i][0] = i;
+        indicesAlea[i][1] = (i+1) % n; 
+    }
+
+    return indicesAlea;
 }
 
 //génère une solution enfant issue de deux solutions parent
 int* croisement(struct Instance* instance, int* solutionParent1, int* solutionParent2)
 {
-	int* solutionEnfant = malloc(instance->N*sizeof(int));
-	
-	return solutionEnfant;
+	srand(time(NULL));
+
+    int* solutionEnfant = malloc(instance->N * sizeof(int));
+    int x = rand() % (instance->N - 1) + 1; // génère un entier aléatoire compris entre 1 et n-1
+    int i;
+
+    // copie les éléments de solutionParent1 avant x
+    for (i = 0; i < x; i++) {
+        solutionEnfant[i] = solutionParent1[i];
+    }
+
+    // copie les éléments de solutionParent2 après x
+    for (i = x; i < instance->N; i++) {
+        solutionEnfant[i] = solutionParent2[i];
+    }
+
+    return solutionEnfant;
 }
 
 //indique si une mutation doit avoir lieu
@@ -210,6 +239,7 @@ int* mutation(int* solution, int tailleSolution)
 	return solutionMutante;
 }
 
+//renvoie une nouvelle population à partir de la population courante et enfant
 int* renouvellement(int* populationCourante, int* populationEnfant, int taillePop)
 {
 	int* nouvellePopulation = malloc(taillePop*sizeof(int));
@@ -217,6 +247,9 @@ int* renouvellement(int* populationCourante, int* populationEnfant, int taillePo
 	return nouvellePopulation;
 }
 
+//implémentation de l'algorithme génétique.
+//retourne une solution de l'instance.
+//NE FONCTIONNE PAS
 int* Metaheuristique_Genetique(struct Instance* instance, int taillePopu, int nbIterationsMax, float Pmut)
 {
 	//calcul d'une population initiale
@@ -238,7 +271,7 @@ int* Metaheuristique_Genetique(struct Instance* instance, int taillePopu, int nb
 			SolutionBest = memcpy(SolutionBest, populationCourante[i], instance->N*sizeof(int) );
 		}
 	}
-	
+
 	int fBest = SolutionFonctionObjectif(instance, SolutionBest);
 
 	int compteur = 0;
@@ -251,7 +284,7 @@ int* Metaheuristique_Genetique(struct Instance* instance, int taillePopu, int nb
 		for (size_t i = 0; i < taillePopu/2; i++)
 		{
 			populationEnfant[indicesParents[i][0]] = croisement(instance, populationCourante[indicesParents[i][0]], populationCourante[indicesParents[i][1]]);
-			populationEnfant[indicesParents[i][1]] = croisement(instance, populationCourante[indicesParents[i][0]], populationCourante[indicesParents[i][1]]);
+			populationEnfant[indicesParents[i][1]] = croisement(instance, populationCourante[indicesParents[i][0]], populationCourante[indicesParents[i][1]]);	
 		}
 
 		//bestSolution et mutations

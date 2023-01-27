@@ -18,6 +18,7 @@ int SolutionFonctionObjectif(struct Instance* instance, int* solution){
 
 //Calcul pour chaque dimension du sac les poids de la solution
 int* SolutionCalculDimension(struct Instance* instance, int* solution){
+	
 	//on cree un tableau de M cases, ce sera le totale des poids pour chaque dimension
 	int *s=malloc(instance->M*sizeof(int));
 

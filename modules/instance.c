@@ -2,43 +2,6 @@
 #include <stdlib.h>
 #include "instance.h"
 
-//fonction qui affiche les valeurs de l'instance
-void PrintInstance(struct Instance* instance)
-{
-    printf("-- INSTANCE --\n");
-    printf("Nombre objets : %d\n", instance->N);
-    printf("Dimension : %d\n", instance->M);
-
-    printf("Valeurs objets : [");
-	for (int i = 0; i < instance->N; i++)
-	{
-		printf("%d",instance->p[i]); 
-        if (i+1 < instance->N) printf(",");
-	}
-	printf("]\n");
-    
-    printf("Poids objets : [\n\n");
-	for (int i = 0; i < instance->M; i++)
-	{
-        printf("[");
-        for (int j = 0; j < instance->N; j++)
-        {
-            printf("%d", instance->r[i][j]); 
-            if (i+1 < instance->N) printf(",");
-        }
-	    printf("]\n\n");
-	}
-	printf("]\n\n");
-
-    printf("Poids maximaux : [");
-	for (int i = 0; i < instance->M; i++)
-	{
-		printf("%d",instance->b[i]); 
-        if (i+1 < instance->M) printf(",");
-	}
-	printf("]\n");
-}
-
 //initialise l'instance donnée en paramètre
 void InstanceInitFromParser(struct Instance* instance, struct Parser* parser, int afficherInstance)
 {
@@ -74,10 +37,8 @@ void InstanceFinalize(struct Instance* instance)
     free(instance->b);
 }
 
+//ajoute les valeurs des objets de la dimension numéro index
 void addToPoidsObjets(struct Instance* instance, int* valeurs, int index)
 {
-    //allocation dynamique du tableau
-    
-    
     instance->r[index] = valeurs;
 }
